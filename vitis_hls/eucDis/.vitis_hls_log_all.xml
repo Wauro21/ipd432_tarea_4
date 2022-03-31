@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vivadoHLSLog:LogRoot xmlns:vivadoHLSLog="www.xilinx.com/vivadoHLSLog">
+  <errorLogs>
+    <logs>
+      <synLog/>
+      <simLog/>
+      <mgLog/>
+      <packageLog/>
+      <csimLog>
+        <logs message="ERROR: [SIM 211-100] 'csim_design' failed: nonzero return value." projectName="eucDis" solutionName="solution1" date="2022-03-30T21:54:36.260-0300"/>
+      </csimLog>
+    </logs>
+  </errorLogs>
+  <warningLogs>
+    <logs>
+      <synLog>
+        <logs message="WARNING: [SYN 201-103] Legalizing function name 'sqrt_fixed&lt;33, 33>' to 'sqrt_fixed_33_33_s'." projectName="eucDis" solutionName="solution1" date="2022-03-30T21:13:00.234-0300" type="Warning"/>
+        <logs message="WARNING: [XFORM 203-561] Updating loop lower bound from 0 to 8 for loop 'eachElement' (eucMod.cpp:6:11) in function 'eucDis'." projectName="eucDis" solutionName="solution1" date="2022-03-30T21:11:34.897-0300" type="Warning"/>
+        <logs message="WARNING: [HLS 207-5301] unused parameter 'print': /tools/Xilinx/Vitis_HLS/2021.1/common/technology/autopilot/ap_int_base.h:792:16" projectName="eucDis" solutionName="solution1" date="2022-03-30T21:08:35.525-0300" type="Warning"/>
+      </synLog>
+      <simLog>
+        <logs message="WARNING: [XSIM 43-3431] One or more environment variables have been detected which affect the operation of the C compiler. These are typically not set in standard installations and are not tested by Xilinx, however they may be appropriate for your system, so the flow will attempt to continue.  If errors occur, try running xelab with the &quot;-mt off -v 1&quot; switches to see more information from the C compiler. The following environment variables have been detected:&#xA;    LIBRARY_PATH" projectName="eucDis" solutionName="solution1" date="2022-03-30T21:25:18.922-0300" type="Warning"/>
+        <logs message="WARNING: [HLS 200-626] This design is unable to schedule all read ports in the first II cycle. The RTL testbench may treat the design as non-pipelined" projectName="eucDis" solutionName="solution1" date="2022-03-30T21:16:56.059-0300" type="Warning"/>
+      </simLog>
+      <mgLog/>
+      <packageLog/>
+      <csimLog>
+        <logs message="WARNING: [HLS 200-40] Cannot find test bench file 'goldenreference.csv'" projectName="eucDis" solutionName="solution1" date="2022-03-30T21:54:27.343-0300" type="Warning"/>
+      </csimLog>
+    </logs>
+  </warningLogs>
+</vivadoHLSLog:LogRoot>
