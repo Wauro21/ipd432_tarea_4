@@ -137,19 +137,22 @@ module top_coprocessor(
   );
 
   // mem_data, shift & write_done to be defined
-  piso_reg #(
-    .MEM_SIZE(MEMORY_DEPTH)
-  )
-  PISO
-  (
-    .clk(CLK50MHZ),
-    .reset(CPU_RESETN),
-    .write_enable(out_write),
-    .shift_0(shift_byte),
-    .shift_1(out_shift),
-    .data_in(out_data),
-    .data_out(tx_data)
-  );
+  // piso_reg #(
+  //   .MEM_SIZE(MEMORY_DEPTH)
+  // )
+  // PISO
+  // (
+  //   .clk(CLK50MHZ),
+  //   .reset(CPU_RESETN),
+  //   .write_enable(out_write),
+  //   .shift_0(shift_byte),
+  //   .shift_1(out_shift),
+  //   .data_in(out_data),
+  //   .data_out(tx_data)
+  // );
+  always_ff @ (posedge clk) begin
+    
+  end
 
   assign JA[0] = UART_TXD_IN;
   assign JA[1] = UART_RXD_OUT;
