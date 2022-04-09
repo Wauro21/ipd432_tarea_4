@@ -14370,7 +14370,7 @@
     "C": {
       "index": "2",
       "direction": "out",
-      "srcType": "unsigned int*",
+      "srcType": "ap_uint<26>*",
       "srcSize": "32",
       "hwRefs": [
         {
@@ -14394,6 +14394,7 @@
     "FlowTarget": "vivado",
     "ConfigTcl": [
       "config_export -format=ip_catalog",
+      "config_export -output=\/mnt\/shared\/Linux\/gdrive\/usm\/2021-s2\/ipd432\/ipd432_tarea_4\/testing_ip\/eucDis.zip",
       "config_export -rtl=verilog",
       "config_export -version=1.0.0"
     ],
@@ -14410,8 +14411,8 @@
     "ClockPeriod": "10",
     "Uncertainty": "2.7",
     "IsCombinational": "0",
-    "II": "23",
-    "Latency": "22"
+    "II": "21",
+    "Latency": "20"
   },
   "Xdc": {"OocClocks": ["create_clock -name ap_clk -period 10.000 [get_ports ap_clk]"]},
   "Ipx": {
@@ -14429,84 +14430,18 @@
   "Files": {
     "CSource": ["..\/..\/eucMod.cpp"],
     "Vhdl": [
-      "impl\/vhdl\/eucDis_add_17ns_17ns_17_1_1.vhd",
-      "impl\/vhdl\/eucDis_control_s_axi.vhd",
-      "impl\/vhdl\/eucDis_dsqrt_64ns_64ns_64_57_no_dsp_1.vhd",
-      "impl\/vhdl\/eucDis_eucDis_Pipeline_eachElement.vhd",
-      "impl\/vhdl\/eucDis_flow_control_loop_pipe_sequential_init.vhd",
-      "impl\/vhdl\/eucDis_gmem_m_axi.vhd",
-      "impl\/vhdl\/eucDis_mac_muladd_9s_9s_17s_18_4_1.vhd",
-      "impl\/vhdl\/eucDis_mac_muladd_9s_9s_18s_18_4_1.vhd",
-      "impl\/vhdl\/eucDis_mac_muladd_9s_9s_18s_19_4_1.vhd",
-      "impl\/vhdl\/eucDis_mac_muladd_9s_9s_26s_26_4_1.vhd",
-      "impl\/vhdl\/eucDis_mac_muladd_9s_9s_27s_27_4_1.vhd",
-      "impl\/vhdl\/eucDis_mac_muladd_9s_9s_32s_32_4_1.vhd",
       "impl\/vhdl\/eucDis_mul_9s_9s_17_1_1.vhd",
-      "impl\/vhdl\/eucDis_mul_9s_9s_18_1_1.vhd",
-      "impl\/vhdl\/eucDis_regslice_both.vhd",
+      "impl\/vhdl\/eucDis_sqrt_fixed_27_27_s.vhd",
       "impl\/vhdl\/eucDis_sqrt_fixed_33_33_s.vhd",
-      "impl\/vhdl\/eucDis_sub_5ns_5ns_5_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_6ns_6ns_6_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_7ns_7ns_7_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_8ns_8ns_8_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_9ns_9ns_9_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_10ns_10ns_10_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_11ns_11ns_11_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_12ns_12ns_12_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_13ns_13ns_13_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_14ns_14ns_14_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_15ns_15ns_15_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_16ns_16ns_16_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_17ns_17ns_17_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_18ns_18ns_18_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_19ns_19ns_19_1_1.vhd",
-      "impl\/vhdl\/eucDis_sub_4096ns_4096ns_4096_2_1.vhd",
-      "impl\/vhdl\/eucDis_sub_8192ns_8192ns_8192_2_1.vhd",
-      "impl\/vhdl\/eucDis_uitodp_32s_64_6_no_dsp_1.vhd",
       "impl\/vhdl\/eucDis.vhd"
     ],
     "Verilog": [
-      "impl\/verilog\/eucDis_add_17ns_17ns_17_1_1.v",
-      "impl\/verilog\/eucDis_control_s_axi.v",
-      "impl\/verilog\/eucDis_dsqrt_64ns_64ns_64_57_no_dsp_1.v",
-      "impl\/verilog\/eucDis_eucDis_Pipeline_eachElement.v",
-      "impl\/verilog\/eucDis_flow_control_loop_pipe_sequential_init.v",
-      "impl\/verilog\/eucDis_gmem_m_axi.v",
-      "impl\/verilog\/eucDis_mac_muladd_9s_9s_17s_18_4_1.v",
-      "impl\/verilog\/eucDis_mac_muladd_9s_9s_18s_18_4_1.v",
-      "impl\/verilog\/eucDis_mac_muladd_9s_9s_18s_19_4_1.v",
-      "impl\/verilog\/eucDis_mac_muladd_9s_9s_26s_26_4_1.v",
-      "impl\/verilog\/eucDis_mac_muladd_9s_9s_27s_27_4_1.v",
-      "impl\/verilog\/eucDis_mac_muladd_9s_9s_32s_32_4_1.v",
       "impl\/verilog\/eucDis_mul_9s_9s_17_1_1.v",
-      "impl\/verilog\/eucDis_mul_9s_9s_18_1_1.v",
-      "impl\/verilog\/eucDis_regslice_both.v",
+      "impl\/verilog\/eucDis_sqrt_fixed_27_27_s.v",
       "impl\/verilog\/eucDis_sqrt_fixed_33_33_s.v",
-      "impl\/verilog\/eucDis_sub_5ns_5ns_5_1_1.v",
-      "impl\/verilog\/eucDis_sub_6ns_6ns_6_1_1.v",
-      "impl\/verilog\/eucDis_sub_7ns_7ns_7_1_1.v",
-      "impl\/verilog\/eucDis_sub_8ns_8ns_8_1_1.v",
-      "impl\/verilog\/eucDis_sub_9ns_9ns_9_1_1.v",
-      "impl\/verilog\/eucDis_sub_10ns_10ns_10_1_1.v",
-      "impl\/verilog\/eucDis_sub_11ns_11ns_11_1_1.v",
-      "impl\/verilog\/eucDis_sub_12ns_12ns_12_1_1.v",
-      "impl\/verilog\/eucDis_sub_13ns_13ns_13_1_1.v",
-      "impl\/verilog\/eucDis_sub_14ns_14ns_14_1_1.v",
-      "impl\/verilog\/eucDis_sub_15ns_15ns_15_1_1.v",
-      "impl\/verilog\/eucDis_sub_16ns_16ns_16_1_1.v",
-      "impl\/verilog\/eucDis_sub_17ns_17ns_17_1_1.v",
-      "impl\/verilog\/eucDis_sub_18ns_18ns_18_1_1.v",
-      "impl\/verilog\/eucDis_sub_19ns_19ns_19_1_1.v",
-      "impl\/verilog\/eucDis_sub_4096ns_4096ns_4096_2_1.v",
-      "impl\/verilog\/eucDis_sub_8192ns_8192ns_8192_2_1.v",
-      "impl\/verilog\/eucDis_uitodp_32s_64_6_no_dsp_1.v",
       "impl\/verilog\/eucDis.v"
     ],
     "IpMisc": ["impl\/misc\/logo.png"],
-    "Subcore": [
-      "impl\/misc\/eucDis_dsqrt_64ns_64ns_64_57_no_dsp_1_ip.tcl",
-      "impl\/misc\/eucDis_uitodp_32s_64_6_no_dsp_1_ip.tcl"
-    ],
     "CsynthXml": "syn\/report\/csynth.xml",
     "DebugDir": ".debug",
     "KernelXml": ".autopilot\/db\/kernel.internal.xml",
@@ -14517,18 +14452,7 @@
   "SubcoreInfo": {
     "HasXpmMemory": false,
     "HasClockedDsp": false,
-    "Ip": [
-      {
-        "Name": "eucDis_dsqrt_64ns_64ns_64_57_no_dsp_1_ip",
-        "Vlnv": "xilinx.com:ip:floating_point:7.1",
-        "Params": "CONFIG.a_precision_type Double CONFIG.a_tuser_width 1 CONFIG.add_sub_value Both CONFIG.b_tuser_width 1 CONFIG.c_a_exponent_width 11 CONFIG.c_a_fraction_width 53 CONFIG.c_compare_operation Programmable CONFIG.c_has_divide_by_zero false CONFIG.c_has_invalid_op false CONFIG.c_has_overflow false CONFIG.c_has_underflow false CONFIG.c_latency 55 CONFIG.c_mult_usage No_Usage CONFIG.c_optimization Speed_Optimized CONFIG.c_rate 1 CONFIG.c_result_exponent_width 11 CONFIG.c_result_fraction_width 53 CONFIG.component_name eucDis_dsqrt_64ns_64ns_64_57_no_dsp_1_ip CONFIG.flow_control NonBlocking CONFIG.has_a_tlast false CONFIG.has_a_tuser false CONFIG.has_aclken true CONFIG.has_aresetn false CONFIG.has_b_tlast false CONFIG.has_b_tuser false CONFIG.has_operation_tlast false CONFIG.has_operation_tuser false CONFIG.has_result_tready false CONFIG.maximum_latency false CONFIG.operation_tuser_width 1 CONFIG.operation_type Square_Root CONFIG.result_precision_type Double CONFIG.result_tlast_behv Null"
-      },
-      {
-        "Name": "eucDis_uitodp_32s_64_6_no_dsp_1_ip",
-        "Vlnv": "xilinx.com:ip:floating_point:7.1",
-        "Params": "CONFIG.a_precision_type Uint32 CONFIG.a_tuser_width 1 CONFIG.add_sub_value Both CONFIG.b_tuser_width 1 CONFIG.c_a_exponent_width 32 CONFIG.c_a_fraction_width 0 CONFIG.c_compare_operation Programmable CONFIG.c_has_divide_by_zero false CONFIG.c_has_invalid_op false CONFIG.c_has_overflow false CONFIG.c_has_underflow false CONFIG.c_latency 4 CONFIG.c_mult_usage No_Usage CONFIG.c_optimization Speed_Optimized CONFIG.c_rate 1 CONFIG.c_result_exponent_width 11 CONFIG.c_result_fraction_width 53 CONFIG.component_name eucDis_uitodp_32s_64_6_no_dsp_1_ip CONFIG.flow_control NonBlocking CONFIG.has_a_tlast false CONFIG.has_a_tuser false CONFIG.has_aclken true CONFIG.has_aresetn false CONFIG.has_b_tlast false CONFIG.has_b_tuser false CONFIG.has_operation_tlast false CONFIG.has_operation_tuser false CONFIG.has_result_tready false CONFIG.maximum_latency false CONFIG.operation_tuser_width 1 CONFIG.operation_type Fixed_to_Float CONFIG.result_precision_type Double CONFIG.result_tlast_behv Null"
-      }
-    ]
+    "Ip": []
   },
   "Interfaces": {
     "ap_clk": {
@@ -45289,7 +45213,7 @@
       "busTypeName": "data",
       "protocol": "ap_vld",
       "mode": "master",
-      "dataWidth": "32",
+      "dataWidth": "26",
       "portMap": {"C": "DATA"},
       "ports": ["C"],
       "constraints": [{
@@ -53519,7 +53443,7 @@
     },
     "C": {
       "dir": "out",
-      "width": "32"
+      "width": "26"
     },
     "C_ap_vld": {
       "dir": "out",
@@ -53530,12 +53454,12 @@
     "Hierarchy": {
       "ModuleName": "eucDis",
       "Instances": [{
-          "ModuleName": "sqrt_fixed_33_33_s",
-          "InstanceName": "grp_sqrt_fixed_33_33_s_fu_16511"
+          "ModuleName": "sqrt_fixed_27_27_s",
+          "InstanceName": "grp_sqrt_fixed_27_27_s_fu_16511"
         }]
     },
     "Info": {
-      "sqrt_fixed_33_33_s": {
+      "sqrt_fixed_27_27_s": {
         "FunctionProtocol": "ap_ctrl_hs",
         "isTaskLevelControl": "0",
         "isPipelined": "1",
@@ -53551,27 +53475,27 @@
       }
     },
     "Metrics": {
-      "sqrt_fixed_33_33_s": {
+      "sqrt_fixed_27_27_s": {
         "Latency": {
-          "LatencyBest": "8",
-          "LatencyAvg": "8",
-          "LatencyWorst": "8",
+          "LatencyBest": "6",
+          "LatencyAvg": "6",
+          "LatencyWorst": "6",
           "PipelineII": "1",
-          "PipelineDepth": "9",
+          "PipelineDepth": "7",
           "PipelineType": "yes"
         },
         "Timing": {
           "Target": "10.00",
           "Uncertainty": "2.70",
-          "Estimate": "7.284"
+          "Estimate": "7.298"
         },
         "Area": {
-          "FF": "577",
+          "FF": "343",
           "AVAIL_FF": "126800",
           "UTIL_FF": "~0",
-          "LUT": "1372",
+          "LUT": "991",
           "AVAIL_LUT": "63400",
-          "UTIL_LUT": "2",
+          "UTIL_LUT": "1",
           "BRAM_18K": "0",
           "AVAIL_BRAM": "270",
           "UTIL_BRAM": "0",
@@ -53585,17 +53509,17 @@
       },
       "eucDis": {
         "Latency": {
-          "LatencyBest": "22",
-          "LatencyAvg": "22",
-          "LatencyWorst": "22",
-          "PipelineII": "23",
+          "LatencyBest": "20",
+          "LatencyAvg": "20",
+          "LatencyWorst": "20",
+          "PipelineII": "21",
           "PipelineDepth": "",
           "PipelineType": "no"
         },
         "Timing": {
           "Target": "10.00",
           "Uncertainty": "2.70",
-          "Estimate": "7.284"
+          "Estimate": "7.298"
         },
         "Loops": [{
             "Name": "eachElement",
@@ -53608,12 +53532,12 @@
           "DSP": "0",
           "AVAIL_DSP": "240",
           "UTIL_DSP": "0",
-          "FF": "7654",
+          "FF": "7417",
           "AVAIL_FF": "126800",
-          "UTIL_FF": "6",
-          "LUT": "39979",
+          "UTIL_FF": "5",
+          "LUT": "39589",
           "AVAIL_LUT": "63400",
-          "UTIL_LUT": "63",
+          "UTIL_LUT": "62",
           "BRAM_18K": "0",
           "AVAIL_BRAM": "270",
           "UTIL_BRAM": "0",
@@ -53627,7 +53551,7 @@
   "GenerateBdFiles": "0",
   "GenData": {
     "DataVersion": "0.2",
-    "Time": "2022-03-30 21:15:08 -03",
+    "Time": "2022-04-08 00:37:54 -04",
     "ToolName": "vitis_hls",
     "ToolVersion": "2021.1"
   }
