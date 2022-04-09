@@ -3,9 +3,9 @@
 // Company:
 // Engineer:
 //
-// Create Date: 01/06/2022 11:35:51 PM
+// Create Date: 03/31/2022 01:39:10 PM
 // Design Name:
-// Module Name: op_module
+// Module Name: sim_hls_ip
 // Project Name:
 // Target Devices:
 // Tool Versions:
@@ -18,49 +18,21 @@
 // Additional Comments:
 //
 //////////////////////////////////////////////////////////////////////////////////
-// Instantation template
-/*------------------------------------------
-op_module #(
-  .N_INPUTS(),
-  .I_WIDTH()
-)
-OP_MOD
-(
-  .cmd(),
-  .enable(),
-  .bram_sel(),
-  .A(),
-  .B(),
-  .out()
-);
-------------------------------------------*/
 
-module op_module#(
-  parameter N_INPUTS = 1024,
-  parameter I_WIDTH = 8,
-  parameter CMD_WIDTH = 3,
-  parameter CYCLES_WAIT = 11
-  )
-  (
-  	input logic clk,
-  	input logic reset,
-    input logic [CMD_WIDTH-1:0] cmd,
-    input logic enable,
-    input logic bram_sel,
-    input logic [N_INPUTS-1:0][I_WIDTH-1:0] A,
-    input logic [N_INPUTS-1:0][I_WIDTH-1:0] B,
-    output logic [I_WIDTH*3-1:0] out,
-	output logic op_done
-  );
 
-  eucDis_0 EUC_HLS (
-  .C_ap_vld(op_done),  // output wire C_ap_vld
+module sim_hls_ip();
+  logic clk, reset, enable, done_flag, idle_flag, ready_flag, valid_output;
+  logic [1023:0][7:0] A;
+  logic [1023:0][7:0] B;
+  logic [31:0] C;
+  eucDis_0 TESTING_HLS (
+  .C_ap_vld(valid_output),  // output wire C_ap_vld
   .ap_clk(clk),      // input wire ap_clk
   .ap_rst(reset),      // input wire ap_rst
   .ap_start(enable),  // input wire ap_start
-  .ap_done(),    // output wire ap_done
-  .ap_idle(),    // output wire ap_idle
-  .ap_ready(),  // output wire ap_ready
+  .ap_done(done_flag),    // output wire ap_done
+  .ap_idle(idle_flag),    // output wire ap_idle
+  .ap_ready(ready_flag),  // output wire ap_ready
   .A_0(A[0]),            // input wire [7 : 0] A_0
   .A_1(A[1]),            // input wire [7 : 0] A_1
   .A_2(A[2]),            // input wire [7 : 0] A_2
@@ -2109,8 +2081,28 @@ module op_module#(
   .B_1021(B[1021]),      // input wire [7 : 0] B_1021
   .B_1022(B[1022]),      // input wire [7 : 0] B_1022
   .B_1023(B[1023]),      // input wire [7 : 0] B_1023
-  .C(out)                // output wire [31 : 0] C
+  .C(C)                // output wire [31 : 0] C
   );
 
+  genvar i;
+  generate
+    for (i = 0; i < 1024; i++) begin
+      assign A[i] = 'd255;
+      assign B[i] = 'd254;
+    end
+  endgenerate
+
+  always #10 clk = ~clk;
+  initial begin
+    clk = 1'b0;
+    reset = 1'b1;
+    enable = 1'b0;
+    #20
+    reset = 1'b0;
+    #10
+    enable = 1'b1;
+    #50
+    enable = 1'b0;
+  end
 
 endmodule

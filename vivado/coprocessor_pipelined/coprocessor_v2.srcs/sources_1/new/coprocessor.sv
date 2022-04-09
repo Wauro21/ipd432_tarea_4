@@ -43,7 +43,7 @@ module coprocessor #(
     output logic [7:0] write_data_b,
     output logic tx_start,
     output logic core_lock,
-    output logic [MEMORY_DEPTH - 1:0] [31:0] out_data,
+    output logic [23:0] out_data,
     output logic out_write,
     output logic out_shift,
     output logic shift_byte,
@@ -190,7 +190,7 @@ module coprocessor #(
   man_bcd
   (
     .i_Clock(clk),
-    .i_Binary(out_data[MEMORY_DEPTH - 1]),
+    .i_Binary(out_data),
     .i_Start(man_conv_bcd),
     .o_BCD(man_bcd_out),
     .o_DV(man_done_bcd)

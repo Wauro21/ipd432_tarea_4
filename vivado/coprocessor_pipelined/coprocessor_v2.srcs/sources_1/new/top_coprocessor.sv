@@ -38,7 +38,7 @@ module top_coprocessor(
   // Logic
   logic rx_ready, core_lock, cmd_flag, bram_sel, tx_busy, write_enable_a, write_enable_b, tx_start, out_shift, out_write;
   logic [7:0] rx_data, tx_data, write_data_a, write_data_b;
-  logic [MEMORY_DEPTH - 1:0] [23:0] out_data;
+  logic [23:0] out_data;
   logic [MEMORY_DEPTH -1 : 0] [7:0] read_data_a, read_data_b;
   logic [CMD_WIDTH-1:0] cmd_dec;
   logic shift_byte;
@@ -136,23 +136,19 @@ module top_coprocessor(
     .data_out(read_data_b)
   );
 
-  // mem_data, shift & write_done to be defined
-  // piso_reg #(
-  //   .MEM_SIZE(MEMORY_DEPTH)
-  // )
-  // PISO
-  // (
-  //   .clk(CLK50MHZ),
-  //   .reset(CPU_RESETN),
-  //   .write_enable(out_write),
-  //   .shift_0(shift_byte),
-  //   .shift_1(out_shift),
-  //   .data_in(out_data),
-  //   .data_out(tx_data)
-  // );
-  always_ff @ (posedge clk) begin
-    
-  end
+  piso_reg #(
+    .MEM_SIZE(MEMORY_DEPTH)
+  )
+  PISO
+  (
+    .clk(CLK50MHZ),
+    .reset(CPU_RESETN),
+    .write_enable(out_write),
+    .shift_0(shift_byte),
+    .shift_1(out_shift),
+    .data_in(out_data),
+    .data_out(tx_data)
+  );
 
   assign JA[0] = UART_TXD_IN;
   assign JA[1] = UART_RXD_OUT;
