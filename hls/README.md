@@ -12,7 +12,13 @@ En la Figura, se puede ver el bloque que se espera implementar. Como entrada, lo
 
 Para poder seguir las instrucciones que se listaran a continuación es necesario tener previamente instalado una versión de **Vivado y Vitis HLS.** Durante el desarrollo de este tutorial se estuvo trabajando con las versiones otorgadas por Xilinx: 2021.1
 
+Si bien no es requisito, pero el hardware utilizado para el presente tutorial corresponde a una tarjeta de desarrollo: **Nexys 4 DDR**, con un chip **xc7a100tcsg324-1**.
+
 
 ## Instrucciones:
 
-### 1. Vitis HLS: Generación de módulo a partir de código de alto nivel
+### Vitis HLS: Generación de módulo a partir de código de alto nivel
+
+#### 1. Creación de proyecto en Vitis HLS
+![Instrucciones de creación de proyecto](graphic_rsrc/create_project.gif)
+En primer lugar se tiene que generar un nuevo proyecto dentro de Vitis HLS, para ello se puede hacer click en: "Create Project",
