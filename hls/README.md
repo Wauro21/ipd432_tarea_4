@@ -20,5 +20,8 @@ Si bien no es requisito, pero el hardware utilizado para el presente tutorial co
 ### Vitis HLS: Generación de módulo a partir de código de alto nivel
 
 #### 1. Creación de proyecto en Vitis HLS
-![Instrucciones de creación de proyecto](graphic_rsrc/create_project.gif)
+<p align="center">
+  <img src="graphic_rsrc/create_project.gif">
+</p>
+
 En primer lugar se tiene que generar un nuevo proyecto dentro de Vitis HLS, para ello se puede hacer click en: "Create Project",
