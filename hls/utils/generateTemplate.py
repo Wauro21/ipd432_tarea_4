@@ -1,6 +1,27 @@
+# A simple code to generate a ready to insert template of the "eucDis" module
+
+import argparse
+
+def argParser():
+    dsc = "By default, the script will search for a template located in the same folder with the name <module_template.txt>, and will save the new template in the same folder with the name <corrected_template.txt>. This behaviour can be overriden by passing arguments to the script"
+    parser = argparse.ArgumentParser(description = dsc)
+    parser.add_argument("-if", "--InputFile", help= "Indicates which template file to correct. By default it searches for: module_template.txt")
+    parser.add_argument("-of","--OutputFile", help = "Indicates where to save the corrected template. By default it's saved to: corrected_template.txt")
+    args = parser.parse_args()
+
+    if args.InputFile:
+        i_file = str(args.InputFile)
+    else:
+        i_file = "module_template.txt"
+    if args.OutputFile:
+        o_file = str(args.OutputFile)
+    else:
+        o_file = "corrected_template.txt"
+
+    return i_file, o_file
+
 def main():
-    inst_template = "module_template.txt"
-    new_template = "corrected_template.txt"
+    inst_template, new_template = argParser()
     file = open(inst_template,"r")
     new_file = open(new_template,"a")
     a_counter = 0
@@ -24,6 +45,6 @@ def main():
         new_file.write(result+"\n")
     file.close()
     new_file.close()
-    print("Template generado")
+    print("Template generated: {}".format(new_template))
 if __name__ == "__main__":
     main()
