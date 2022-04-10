@@ -1,0 +1,3 @@
+# Ignore the extracted ip folders
+exported_ip/*
+!exported_ip/eucDis.zip
