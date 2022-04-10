@@ -23,7 +23,7 @@ def argParser():
 def main():
     inst_template, new_template = argParser()
     file = open(inst_template,"r")
-    new_file = open(new_template,"a")
+    new_file = open(new_template,"w")
     a_counter = 0
     b_counter = 0
     a_val = "(A[{}])"
