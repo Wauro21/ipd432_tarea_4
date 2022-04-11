@@ -114,14 +114,6 @@ module coprocessor #(
     .out(out_data),
   	.op_done(op_done)
   );
-  
-  ila_op_mod OP_MOD_ILA(
-	.clk(clk), // input wire clk
-
-
-	.probe0(op_enable), // input wire [0:0]  probe0  
-	.probe1(op_done) // input wire [0:0]  probe1
-);
 
   // -------------------------------------------------------------------[Memory]
   // Memory logic
