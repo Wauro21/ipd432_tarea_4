@@ -118,8 +118,22 @@ Se desplegará un menú de opciones en el cual se puede confirmar parámetros de
   <img src="graphic_rsrc/synth_result.png">
 </p>
 
-Luego de completarse la síntesis, se desplegará un reporte con los resultados, principalmente de _timming_ y uso de recursos estimados. Dados los _pragmas_ utilizados (los cuales se detallan en el [README.md](/hls/vitis_hls/README.md), dentro de la carpeta _vitis_hls_) se logró cumplir con los requisitos temporales para el relojs seleccionado:
+Luego de completarse la síntesis, se desplegará un reporte con los resultados, principalmente de _timming_ y uso de recursos estimados. El análisis de estos resultados se reportaran en una sección posterior.
 
-| **Target Clock** | **Estimated** | **Uncertainty** |
-|------------------|---------------|-----------------|
-| 10.00 ns | 7.298 ns | 2.70 ns |
+#### 4. Exportar a Vivado
+
+<p align="center">
+  <img src="graphic_rsrc/export.gif">
+</p>
+
+En esta etapa, se puede exportar el módulo sintetizado desde Vitis HLS hacia Vivado para que sea utilizado como un módulo IP.
+
+<p align="center">
+  <img src="graphic_rsrc/flow_navigator.png">
+</p>
+
+Desde el menú _Flow Navigator_, se escoge la opción _Export RTL_.
+
+<p align="center">
+  <img src="graphic_rsrc/export_menu.png">
+</p>
