@@ -8,6 +8,8 @@ En la siguiente sección se explicará el proceso para a partir de un código im
 
 En la Figura, se puede ver el bloque que se espera implementar. Como entrada, los vectores **A** y **B**, cada uno de 1024x8 bits. La salida, **C**, corresponde a un **único valor de 26 bits.**
 
+Un análisis más fino del código utilizado para la síntesis de alto nivel, se puede encontrar en el [README](/hls/vitis_hls/README.md) de la carpeta _vitis_hls_. 
+
 ## Requisitos:
 
 Para poder seguir las instrucciones que se listaran a continuación es necesario tener previamente instalado una versión de **Vivado y Vitis HLS.** Durante el desarrollo de este tutorial se estuvo trabajando con las versiones otorgadas por Xilinx: 2021.1
@@ -47,11 +49,56 @@ En este menú se podrán añadir los códigos fuentes, en este caso, corresponde
   <img src="graphic_rsrc/add_testbench.png">
 </p>
 
-En esta sección se añaden las pruebas a las que se someterá el módulo generado en contraste con el código de alto nivel original. Para ello se diseñan dos archivos que se deben añadir, desde la carpeta _vitis_hls_. **En primer lugar**, se debe añadir el archivo denominado _testbench.cpp_, este archivo contiene una prueba que compara el funcionamiento del código implementado en C++ para la obtención de la distancia Euclidiana entre los vectores A y B, y el módulo inferido a partir del código de alto nivel. **En segundo lugar**, se añade el archivo denominado _goldenreference.csv_, el cual tiene los vectores generados mediante el script [goldenGenerator.py](/hls/utils/goldenGenerator.py)
+En esta sección se añaden las pruebas a las que se someterá tanto el código implementada y el módulo generado en contraste con el código de alto nivel original. Para ello se diseñan dos archivos que se deben añadir, desde la carpeta _vitis_hls_. **En primer lugar**, se debe añadir el archivo denominado _testbench.cpp_, este archivo contiene una prueba que compara el funcionamiento del código implementado en C++ para la obtención de la distancia Euclidiana entre los vectores A y B, y el módulo inferido a partir del código de alto nivel. **En segundo lugar**, se añade el archivo denominado _goldenreference.csv_, el cual tiene los vectores generados mediante el script [goldenGenerator.py](/hls/utils/goldenGenerator.py), los cuales son utilizados como entrada para el algoritmo de prueba. Detalles de la generación de estos valores de referencia pueden ser encontrados en el [README](/hls/utils/README.md) de la sección _utils_.
 
-##### Sel
+##### Configuración de la solución y selección de hardware target
 
+<p align="center">
+  <img src="graphic_rsrc/target_hardware.png">
+</p>
 
+En esta sección se puede dar un nombre a la solución a implementar, en este caso se puede dejar el por defecto: _solution1_. Se puede dar la configuración del reloj que controlará la solución a imlementar en este caso, se deja por defecto en 10 _ns_. Finalmente, en la sección de _Part Selection_, se selecciona el hardware target, en nuestro caso, se utiliza la placa de desarrollo Nexys 4 DDR, con un chip : xc7a100tcsg324-1, por lo que se ha seleccionado esta. Finalmente se le da click a _Finish_ y se habrá configurado el proyecto de manera exitosa.
+
+#### 2. Simulación del código de alto nivel
+
+<p align="center">
+  <img src="graphic_rsrc/sim_visualization.gif">
+</p>
+
+Dentro de las herramientas ofrecidas por Vitis HLS, se encuentra la capacidad de comprobar el funcionamiento del código de alto nivel mediante una simulación. Esto se refiere a utilizar el testbench (_testbench.cpp_), para comprobar que el resultado del código sea el deseado.
+
+<p align="center">
+  <img src="graphic_rsrc/flow_navigator.png">
+</p>
+
+Desde el panel de _Flow Navigator_, se puede escoger la opción _Run C Simulation_, esto generará la compilación y resultado del testbench que se incluyo en la estapa previa (_testbench.cpp_). Luego de esto, comenzara a compilarse y correr el código lo que se podrá observar mediante la actividad mostrada por la consola de Vitis HLS. Cuando se termine de correr el testbench, se desplegará un archivo con extensión _.log_ que contendrá los resultados de la prueba al código de alto nivel. Para el testbench provisto se esperan los siguientes resultados:
+
+```
+INFO: [SIM 2] *************** CSIM start ***************
+INFO: [SIM 4] CSIM will launch GCC as the compiler.
+make: 'csim.exe' is up to date.
+Running C++ Simulation!
+-----------------------------------
+Valor esperado: 3452
+Valor calculado: 3452
+Diferencia directa: 0
+Diferencia relativa: 0
+-----------------------------------
+PASSED!
+-----------------------------------
+INFO: [SIM 1] CSim done with 0 errors.
+INFO: [SIM 3] *************** CSIM finish ***************
+
+```
+**Nota #1**: Si bien el resultado del testbench se muestra tanto en la consola como en el archivo _.log_ desplegado, siempre es mejor observar los resultados de la consola, dado que se ha encontrado ocasiones que luego de correr varias veces el _testbench_, el archivo log desplegado a veces no es actualizado, dando por resultado situaciones de falsos _Passed/Failed_.
+
+**Nota #2**: Vitis HLS tiene la habilidad de desplegar ventanas emergentes con error asociado a los testbench, en el caso de que el código contenga un _print_ con las palabras: "Error" o "Failed". Esto es bastante útil dado que es bastante claro cuando el comportamiento del código no es el esperado, sin la necesidad de trabajar con excepciones o alguna otra forma de aviso mediante código.
+
+#### 3. Síntesis
+
+<p align="center">
+  <img src="graphic_rsrc/sintesis.gif">
+</p>
 
 
 
