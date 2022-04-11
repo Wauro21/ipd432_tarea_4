@@ -8,7 +8,7 @@ En la siguiente sección se explicará el proceso para a partir de un código im
 
 En la Figura, se puede ver el bloque que se espera implementar. Como entrada, los vectores **A** y **B**, cada uno de 1024x8 bits. La salida, **C**, corresponde a un **único valor de 26 bits.**
 
-Un análisis más fino del código utilizado para la síntesis de alto nivel, se puede encontrar en el [README](/hls/vitis_hls/README.md) de la carpeta _vitis_hls_. 
+Un análisis más fino del código utilizado para la síntesis de alto nivel, se puede encontrar en el [README](/hls/vitis_hls/README.md) de la carpeta _vitis_hls_.
 
 ## Requisitos:
 
@@ -57,7 +57,7 @@ En esta sección se añaden las pruebas a las que se someterá tanto el código 
   <img src="graphic_rsrc/target_hardware.png">
 </p>
 
-En esta sección se puede dar un nombre a la solución a implementar, en este caso se puede dejar el por defecto: _solution1_. Se puede dar la configuración del reloj que controlará la solución a imlementar en este caso, se deja por defecto en 10 _ns_. Finalmente, en la sección de _Part Selection_, se selecciona el hardware target, en nuestro caso, se utiliza la placa de desarrollo Nexys 4 DDR, con un chip : xc7a100tcsg324-1, por lo que se ha seleccionado esta. Finalmente se le da click a _Finish_ y se habrá configurado el proyecto de manera exitosa.
+En esta sección se puede dar un nombre a la solución a implementar, en este caso se puede dejar el por defecto: _solution1_. Se puede dar la configuración del reloj que controlará la solución a implementar en este caso, se deja por defecto en 10 _ns_. Finalmente, en la sección de _Part Selection_, se selecciona el hardware target, en nuestro caso, se utiliza la placa de desarrollo Nexys 4 DDR, con un chip : xc7a100tcsg324-1, por lo que se ha seleccionado esta. Finalmente se le da click a _Finish_ y se habrá configurado el proyecto de manera exitosa.
 
 #### 2. Simulación del código de alto nivel
 
@@ -100,21 +100,26 @@ INFO: [SIM 3] *************** CSIM finish ***************
   <img src="graphic_rsrc/sintesis.gif">
 </p>
 
+En esta etapa Vitis HLS, a partir del código de alto nivel, genera la implementación a partir del comportamiento asociado a la funcionalidad del código.
 
+<p align="center">
+  <img src="graphic_rsrc/flow_navigator.png">
+</p>
 
+Para iniciar el proceso, desde el menú _Flow Navigator_, se escoge la opción _Run C Synthesis_.
 
+<p align="center">
+  <img src="graphic_rsrc/synth_opts.png">
+</p>
 
+Se desplegará un menú de opciones en el cual se puede confirmar parámetros del reloj asociado a la implementación y el hardware target. Estos corresponden a los escogidos anteriormente. Se procede a confirmar seleccionando _OK_, de esta forma iniciando el proceso de síntesis. Para el módulo provisto, se espera que el tiempo de síntesis sea de aproximadamente ~ 10 minutos.
 
+<p align="center">
+  <img src="graphic_rsrc/synth_result.png">
+</p>
 
+Luego de completarse la síntesis, se desplegará un reporte con los resultados, principalmente de _timming_ y uso de recursos estimados. Dados los _pragmas_ utilizados (los cuales se detallan en el [README.md](/hls/vitis_hls/README.md), dentro de la carpeta _vitis_hls_) se logró cumplir con los requisitos temporales para el relojs seleccionado:
 
-
-
-
-
-La comparación realizada busca encontrar dos métricas de comparación, en primer lugar un error directo, que corresponde al valor absoluto entre el resultado esperado (obtenido mediante el cálculo de valores desde la goldenReference) y el valor obtenido desde el módulo inferido. En segundo lugar, se obtiene una métrica de error relativo, la cual es simplemente el porcentaje obtenido del error directo, sobre el valor esperado. En resumen:
-
-```
-errorDirecto = Esperado - Obtenido
-
-errorRelativo = 100*errorDirecto/Esperado
-```
+| **Target Clock** | **Estimated** | **Uncertainty** |
+|------------------|---------------|-----------------|
+| 10.00 ns | 7.298 ns | 2.70 ns |
