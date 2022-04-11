@@ -137,3 +137,9 @@ Desde el menú _Flow Navigator_, se escoge la opción _Export RTL_.
 <p align="center">
   <img src="graphic_rsrc/export_menu.png">
 </p>
+
+Se desplegará un sub-menú, en el cual se podrá escoger el directorio de salida (_Output Location_). Dentro del repositorio ya se incluye en la carpeta [exported_ip](/hls/exported_ip) un ejemplo del resultado de la exportación del módulo desde Vitis HLS. Como resultado del proceso, se debe obtener un archivo _.zip_ que contiene el módulo. Antes de que este pueda ser usado en Vivado, se debe descomprimir, en el caso del _zip_ provisto dentro de _exported_ip_, se puede descomprimir dentro de esta carpeta.
+
+**Nota:** Se debe indicar la versión para el módulo dado que sino se encontrará un error al momento de realizar la exportación. Se puede poner un valor por defecto, en este caso se utiliza : 1.0.0
+
+#### 5. Creación de Proyecto en Vivado
