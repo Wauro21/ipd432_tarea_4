@@ -120,7 +120,32 @@ Se desplegará un menú de opciones en el cual se puede confirmar parámetros de
 
 Luego de completarse la síntesis, se desplegará un reporte con los resultados, principalmente de _timming_ y uso de recursos estimados. El análisis de estos resultados se reportaran en una sección posterior.
 
-#### 4. Exportar a Vivado
+#### 4. Co-Simulación
+
+_Vitis HLS_ permite realizar la Co-Simulación entre el bloque descrito en un lenguaje de alto nivel y el inferido de este. Para ello se utiliza el _testbench_ implementado para verificar el funcionamiento del código de alto nivel.
+
+<p align="center">
+  <img src="graphic_rsrc/flow_navigator.png">
+</p>
+
+Para utilizarlo, desde el menú _Flow Navigator_, se hace click en _Run Cosimulation_.
+
+<p align="center">
+  <img src="graphic_rsrc/co_sim_menu.png">
+</p>
+
+Esto desplegará el menú de configuraciones para la cosimulación, se dejan todos los parámetros por defecto y se da click a _OK_, dando inicio al proceso.
+
+**Nota:** El proceso de cosimulación puede ser bastante largo e intensivo en recursos del computador.
+
+<p align="center">
+  <img src="graphic_rsrc/co_sim_result.png">
+</p>
+
+Luego de finalizarse el proceso, se desplegará un reporte, que en el campo _Status_ informará si el módulo inferido pasó o no (Pass/Failed) el _testbench_. Además se entregará información del _timming_ para la simulación.
+
+
+#### 5. Exportar a Vivado
 
 <p align="center">
   <img src="graphic_rsrc/export.gif">
@@ -142,4 +167,32 @@ Se desplegará un sub-menú, en el cual se podrá escoger el directorio de salid
 
 **Nota:** Se debe indicar la versión para el módulo dado que sino se encontrará un error al momento de realizar la exportación. Se puede poner un valor por defecto, en este caso se utiliza : 1.0.0
 
-#### 5. Creación de Proyecto en Vivado
+#### 6. Creación de Proyecto en Vivado
+
+Para la generación del proyecto de Vivado, se hará una breve explicación de los parámetros del proyecto a generar, dado que no es el enfoque de este tutorial
+
+##### Sources a incluir
+
+<p align="center">
+  <img src="graphic_rsrc/sources.png">
+</p>
+
+- Desde el botón _Add Files_ se deben incluir todos los archivos con extensión _.sv_ presentes en el directorio [vivado](/hls/vivado)
+
+- Desde el botón _Add Directories_ se debe incluir la carpeta `UART` presente en la misma carpeta: [vivado](/hls/vivado)
+
+##### Constraint
+
+<p align="center">
+  <img src="graphic_rsrc/constraint.png">
+</p>
+
+- Dentro de los archivos entregados en la carpeta [vivado](/hls/vivado), se encuentra un archivo _constraint_ `constraint_coprocessor.xdc` el cual debe ser incluido con el proyecto.
+
+
+##### Target Hardware
+<p align="center">
+  <img src="graphic_rsrc/select_hw.png">
+</p>
+
+- Siguiendo las instrucciones utilizadas en Vitis HLS, se selecciona como target la tarjeta de desarrollo Nexys 4 DDR: `xc7a100tcsg324-1`
