@@ -196,3 +196,21 @@ Para la generación del proyecto de Vivado, se hará una breve explicación de l
 </p>
 
 - Siguiendo las instrucciones utilizadas en Vitis HLS, se selecciona como target la tarjeta de desarrollo Nexys 4 DDR: `xc7a100tcsg324-1`
+
+##### Añadiendo Repositorio de IP
+
+Las fuentes del proyecto provisto, incluyen previamente instanciado el módulo exportado desde _Vitis HLS_, este se encuentra en el archivo [`op_module.sv`](/hls/vivado/op_module.sv). Sin embargo, es necesario incluir el directorio (repositorio local) donde se encuentran los archivos extraídos desde el _.zip_ exportado desde _Vitis HLS_.
+
+<p align="center">
+  <img src="graphic_rsrc/sources_missing_ip.png">
+</p>
+
+Como se puede apreciar, al revisar las sources del proyecto, el módulo `op_module.sv` espera tener una instancia del módulo `EUC_HLS`, sin embargo no se encuentra el módulo asociado.
+
+<p align="center">
+  <img src="graphic_rsrc/adding_ip.gif">
+</p>
+
+1. Desde _Project Manager_ se abre el _IP Catalog_.
+2. Haciendo clik derecho sobre el listado de repositorios se selecciona _Add Repository_, esto desplegara una ventana donde se puede seleccioanr el directorio donde se ha descomprimido el _.zip_ obtenido desde _Vitis HLS_.
+3. 
