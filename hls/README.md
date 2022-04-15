@@ -12,8 +12,19 @@ Un análisis más fino del código utilizado para la síntesis de alto nivel, se
 
 ## Índice
 
-1. [Requisitos](#requisitos)
-
+- [Requisitos](#requisitos)
+- [Instrucciones](#instrucciones)
+  - [Vitis HLS: Generación de módulo a partir de código de alto nivel](#vitis-hls-generación-de-módulo-a-partir-de-código-de-alto-nivel)
+    1. [Creación de proyecto en Vitis HLS](#1-creación-de-proyecto-en-vitis-hls)
+      - [Generación proyecto](#generación-proyecto)
+      - [Añadiendo sources](#añadiendo-sources)
+      - [Añadiendo testbench](#añadiendo-testbench)
+      - [Configuración de la solución y selección de hardware target](configuración-de-la-solución-y-selección-de-hardware-target)
+    2. [Simulación del código de alto nivel](#2-simulación-del-código-de-alto-nivel)
+    3. [Síntesis](#3-síntesis)
+    4. [Co-Simulación](#4-co-simulación)
+    5. [Exportar a Vivado](#5-exportar-a-vivado)
+  - [Vivado: Creación de Proyecto usando el módulo exportado](#vivado-creación-de-proyecto-usando-el-módulo-exportado)
 ## Requisitos:
 
 Para poder seguir las instrucciones que se listaran a continuación es necesario tener previamente instalado una versión de **Vivado y Vitis HLS.** Durante el desarrollo de este tutorial se estuvo trabajando con las versiones otorgadas por Xilinx: 2021.1
@@ -171,7 +182,7 @@ Se desplegará un sub-menú, en el cual se podrá escoger el directorio de salid
 
 **Nota:** Se debe indicar la versión para el módulo dado que sino se encontrará un error al momento de realizar la exportación. Se puede poner un valor por defecto, en este caso se utiliza : 1.0.0
 
-#### 6. Creación de Proyecto en Vivado
+#### Vivado: Creación de Proyecto usando el módulo exportado
 
 Para la generación del proyecto de Vivado, se hará una breve explicación de los parámetros del proyecto a generar, dado que no es el enfoque de este tutorial
 
