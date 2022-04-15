@@ -212,5 +212,32 @@ Como se puede apreciar, al revisar las sources del proyecto, el módulo `op_modu
 </p>
 
 1. Desde _Project Manager_ se abre el _IP Catalog_.
-2. Haciendo clik derecho sobre el listado de repositorios se selecciona _Add Repository_, esto desplegara una ventana donde se puede seleccioanr el directorio donde se ha descomprimido el _.zip_ obtenido desde _Vitis HLS_.
-3. 
+2. Haciendo clik derecho sobre el listado de repositorios se selecciona _Add Repository_, esto desplegara una ventana donde se puede seleccionar el directorio donde se ha descomprimido el _.zip_ obtenido desde _Vitis HLS_. En el caso de este ejemplo se ha descomprimido en la carpeta `/exported_ip`.
+
+<p align="center">
+  <img src="graphic_rsrc/added_repo.png">
+</p>
+
+3. Luego de haber añadido el repositorio, aparecerá una sección denominada _User Repository_, dentro de la cual se encontrará el módulo IP a incorporar.
+
+<p align="center">
+  <img src="graphic_rsrc/ip_config.png">
+</p>
+
+4. Haciendo doble click sobre el módulo, abrirá una ventana de configuración, dar click a _OK._.
+
+**Nota:** A la izquierda puede verse el módulo como bloque, se ve de esta manera, debido a que al realizar _array_partition_ mediante _pragmas_ (Veáse el [README.md](/hls/vitis_hls/README.md) para más información), los puertos correspondientes a los vectores A y B, se consideran por elemento, dando que el módulo tenga 2048 entradas, sin contar las que se añaden de forma automática.
+
+<p align="center">
+  <img src="graphic_rsrc/synth_ip.png">
+</p>
+
+5. Se desplegará un menú para la generación del módulo IP. Note que se da acceso a un _Instatation Template_, se recomienda utilizar éste como base en conjunto con el script e instrucciones para uso provistas en el [README.md](/hls/vitis_hls/utils/README.md) de la sección _/hls/vitis_hls/utils_, dado que asignar cada bus (vectores A y B) de forma individual para cada una de las 2048 entradas. Para finalizar, se da click en _Generate_.
+
+<p align="center">
+  <img src="graphic_rsrc/ip_ok.png">
+</p>
+
+6. Luego de haber realizado estos pasos, al revisar en las _design sources_ se puede observar que el módulo es correctamente listado.
+
+7. El proceso después continua normalmente con la síntesis, implementación y generación del bit stream. 
