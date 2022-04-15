@@ -25,6 +25,10 @@ Un análisis más fino del código utilizado para la síntesis de alto nivel, se
     4. [Co-Simulación](#4-co-simulación)
     5. [Exportar a Vivado](#5-exportar-a-vivado)
   - [Vivado: Creación de Proyecto usando el módulo exportado](#vivado-creación-de-proyecto-usando-el-módulo-exportado)
+    1. [Sources a incluir](#1-sources-a-incluir)
+    2. [Constraint](#2-constraint)
+    3. [Target Hardware](#3-target-hardware)
+    4. [Añadiendo Repositorio de IP](#4-añadiendo-repositorio-de-ip)
 ## Requisitos:
 
 Para poder seguir las instrucciones que se listaran a continuación es necesario tener previamente instalado una versión de **Vivado y Vitis HLS.** Durante el desarrollo de este tutorial se estuvo trabajando con las versiones otorgadas por Xilinx: 2021.1
@@ -186,7 +190,7 @@ Se desplegará un sub-menú, en el cual se podrá escoger el directorio de salid
 
 Para la generación del proyecto de Vivado, se hará una breve explicación de los parámetros del proyecto a generar, dado que no es el enfoque de este tutorial
 
-##### Sources a incluir
+##### 1. Sources a incluir
 
 <p align="center">
   <img src="graphic_rsrc/sources.png">
@@ -196,7 +200,7 @@ Para la generación del proyecto de Vivado, se hará una breve explicación de l
 
 - Desde el botón _Add Directories_ se debe incluir la carpeta `UART` presente en la misma carpeta: [vivado](/hls/vivado)
 
-##### Constraint
+##### 2. Constraint
 
 <p align="center">
   <img src="graphic_rsrc/constraint.png">
@@ -205,14 +209,14 @@ Para la generación del proyecto de Vivado, se hará una breve explicación de l
 - Dentro de los archivos entregados en la carpeta [vivado](/hls/vivado), se encuentra un archivo _constraint_ `constraint_coprocessor.xdc` el cual debe ser incluido con el proyecto.
 
 
-##### Target Hardware
+##### 3. Target Hardware
 <p align="center">
   <img src="graphic_rsrc/select_hw.png">
 </p>
 
 - Siguiendo las instrucciones utilizadas en Vitis HLS, se selecciona como target la tarjeta de desarrollo Nexys 4 DDR: `xc7a100tcsg324-1`
 
-##### Añadiendo Repositorio de IP
+##### 4. Añadiendo Repositorio de IP
 
 Las fuentes del proyecto provisto, incluyen previamente instanciado el módulo exportado desde _Vitis HLS_, este se encuentra en el archivo [`op_module.sv`](/hls/vivado/op_module.sv). Sin embargo, es necesario incluir el directorio (repositorio local) donde se encuentran los archivos extraídos desde el _.zip_ exportado desde _Vitis HLS_.
 
