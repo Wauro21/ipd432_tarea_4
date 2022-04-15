@@ -10,6 +10,10 @@ En la Figura, se puede ver el bloque que se espera implementar. Como entrada, lo
 
 Un análisis más fino del código utilizado para la síntesis de alto nivel, se puede encontrar en el [README](/hls/vitis_hls/README.md) de la carpeta _vitis_hls_.
 
+## Índice
+
+1. [Requisitos](#requisitos)
+
 ## Requisitos:
 
 Para poder seguir las instrucciones que se listaran a continuación es necesario tener previamente instalado una versión de **Vivado y Vitis HLS.** Durante el desarrollo de este tutorial se estuvo trabajando con las versiones otorgadas por Xilinx: 2021.1
@@ -240,4 +244,4 @@ Como se puede apreciar, al revisar las sources del proyecto, el módulo `op_modu
 
 6. Luego de haber realizado estos pasos, al revisar en las _design sources_ se puede observar que el módulo es correctamente listado.
 
-7. El proceso después continua normalmente con la síntesis, implementación y generación del bit stream. 
+7. El proceso después continua normalmente con la síntesis, implementación y generación del bit stream.
