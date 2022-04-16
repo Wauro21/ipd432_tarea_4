@@ -4,12 +4,12 @@ En las siguientes secciones se explora el código que será utilizado en _Vitis 
 ## Índice
 
 1. [Optimización del código](#optimización-del-código)
-  1. [Optimización operación raíz: Vitis HLS Math](#optimización-operación-raíz-vitis-hls-math)
-  2. [Uso de arbitrary precission data types: Vitis HLS ap_int](#uso-de-arbitrary-precission-data-types-vitis-hls-ap_int)
-  3. [Pragmas utilizados](#pragmas-utilizados)
-    - [Array Partition](#array-partition)
-    - [Unroll](#unroll)
-  4. [Optimización del cálculo de diferencia](#optimización-del-cálculo-de-diferencia)
+    1. [Optimización operación raíz: Vitis HLS Math](#optimización-operación-raíz--vitis-hls-math)
+    2. [Uso de arbitrary precission data types: Vitis HLS ap_int](#uso-de-arbitrary-precission-data-types-vitis-hls-ap_int)
+    3. [Pragmas utilizados](#pragmas-utilizados)
+        - [Array Partition](#array-partition)
+        - [Unroll](#unroll)
+    4. [Optimización del cálculo de diferencia](#optimización-del-cálculo-de-diferencia)
 
 ## Optimización del código
 
