@@ -29,6 +29,12 @@ Un análisis más fino del código utilizado para la síntesis de alto nivel, se
     2. [Constraint](#2-constraint)
     3. [Target Hardware](#3-target-hardware)
     4. [Añadiendo Repositorio de IP](#4-añadiendo-repositorio-de-ip)
+- [Reportes de operación](#reportes-de-operación)
+  - [Reporte desde Vitis HLS](#reporte-desde-vitis-hls)
+  - [Reporte desde Vivado](#reporte-desde-vivado)
+      - [Frecuencia de Operación](#frecuencia-de-operación)
+      - [Latencia y Throughput](#latencia-y-throughput)
+      - [Uso de recursos](#uso-de-recursos)
 ## Requisitos:
 
 Para poder seguir las instrucciones que se listaran a continuación es necesario tener previamente instalado una versión de **Vivado y Vitis HLS.** Durante el desarrollo de este tutorial se estuvo trabajando con las versiones otorgadas por Xilinx: 2021.1
@@ -260,3 +266,55 @@ Como se puede apreciar, al revisar las sources del proyecto, el módulo `op_modu
 6. Luego de haber realizado estos pasos, al revisar en las _design sources_ se puede observar que el módulo es correctamente listado.
 
 7. El proceso después continua normalmente con la síntesis, implementación y generación del bit stream.
+
+## Reportes de operación
+
+A continuación se listan los siguientes reportes obtenidos, tanto desde _Vivado_, como de _Vitis_hls_.
+
+
+### Reporte desde Vitis HLS
+
+Este reporte, se obtiene durante la etapa de diseño y solo representa el módulo a implementar y no el sistema completo, sin embargo, se considera una buena referencia para contrastar con los resultados finales.
+
+| **Latencia** _ciclos_ | **BRAM** _%_ | **DSP** _%_ | **FF** _%_ | **LUT** _%_ | **URAM** _%_ |
+|-|-|-|-|-|-|
+| 20| 0 | ~0 | 5 | 62 | 0 |
+
+### Reporte desde Vivado
+
+#### Frecuencia de operación:
+
+La implementación final, se realizó con un **reloj principal de 100 MHz**, para el diseño completo se obtuvieron los siguientes resultados de timming:
+
+|| **Worst Negative Slack** _ns_ | **Total Negative Slack** _ns_ | **Number of failing Endpoints** | **Total Number of Endpoints** |
+|------|--------------------|--------------------|--------------------|--------------------|
+| **Setup** | 0.056 | 0 | 0 | 79565 |
+| **Hold** | 0.023 | 0 | 0 | 79565 |
+
+#### Latencia y Throughput
+
+La latencia del módulo de distancia euclidiana implementado, puede ser verificado utilizando una _ILA_, instanciada en [`coprocessor.sv`](/hls/vivado/coprocessor.sv), conectada a los puertos `op_enable` y `op_done` del módulo de operaciones, de esta forma se verifica desde que se activa la señal `enable` hasta que se levanta la señal que informa que el resultado está disponible.
+
+<p align="center">
+  <img src="graphic_rsrc/ila_lat.png">
+</p>
+
+A partir de esto se verifica que la latencia corresponde a lo estimado durante la etapa de síntesis en _Vitis_hls_, **20 ciclos**. De esta forma, considerando que se tiene un reloj de 100 MHz, se puede estimar que el throughput para el módulo implementado corresponde a  5.000.000 de operaciones por segundo. En resumen:
+
+| **Latencia** _ciclos_ | **Latencia** _ns_ | **Throughput** _operaciones/s_ |
+|-----------------------|-------------------|--------------------------------|
+| 20 | 200 | 5.000.000 |
+
+####  Uso de recursos
+
+A continuación se detalla el uso de recursos para la implementación completa del coprocesador:
+
+| **Recurso** | **Utilización** | **Disponibles** | **Utilización** _%_|
+|-------------|-----------------|-----------------|--------------------|
+|LUT |25669|63400|40.48738|
+|LUTRAM	| 115 |	19000 |	0.6052631|
+| FF | 35937 |126800| 28.341484 |
+|BRAM |	0.5 |	135 |	0.37037036|
+| DSP|	240|	240|	100.0|
+|IO|	21|	210|	10.0|
+|BUFG	|2	|32|	6.25|
