@@ -146,9 +146,34 @@ Durante la etapa de desarrollo, el uso excesivo de recursos se manifestaba como 
 
 Para la optimización final, es necesario evitar que se tenga operaciones que resulten en un valor con signo, por ejemplo en el caso que A[n] = 124 y B[n] = 200, de la forma en la que se implementa el cálculo de la distancia, se obtendría un resultado parcial con signo, -76, sin embargo, como sólo interesa la diferencia entre los valores se puede realizar el cálculo considerando primero el valor mayor y a este restarle el menor. Realizando esto en el código:
 
-```
+```cpp
+#include "eucMod.h"
+void eucDis(INPUT A[VECTOR_LENGTH], INPUT B[VECTOR_LENGTH], OUTPUT* C){
+    #pragma HLS expression_balance
+    #pragma HLS ARRAY_PARTITION variable=A type=complete  dim=1
+    #pragma HLS ARRAY_PARTITION variable=B type=complete dim=1
+    ap_uint<26> temp = 0;
+    eachElement:for(int index = 0; index < VECTOR_LENGTH; index ++){
+      #pragma HLS loop_tripcount max=1024
+      #pragma HLS unroll factor=128
+      if(A[index] > B[index]){
+        temp += (A[index]-B[index])*(A[index]-B[index]);
+      }
+      else{
+        temp += (B[index]-A[index])*(B[index]-A[index]);
+      }
+    }
+    C[0] = hls::sqrt(temp);
+}
 
 ```
+De esta forma se llega a la implementación descrita en [`eucMod.cpp`](eucMod.cpp), sintetizando en _Vitis HLS_:
+
+| **Latencia** _ciclos_ | **BRAM** _%_ | **DSP** _%_ | **FF** _%_ | **LUT** _%_ | **URAM** _%_ |
+|-|-|-|-|-|-|
+| 20| 0 | ~0 | 5 | 62 | 0 |
+
+Finalmente, se obtiene una **mejora de 1 ciclo** en realación a la implementación anterior, en términos de recursos, se logra bajar el uso de _FFs_ en 11% y de _LUTs_ en un 88%, dejando suficientes recursos teóricamente, para la implementación del resto de lógica asociada. 
 
 
 ## Testbench
