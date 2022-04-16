@@ -16,10 +16,10 @@ Un análisis más fino del código utilizado para la síntesis de alto nivel, se
 - [Instrucciones](#instrucciones)
   - [Vitis HLS: Generación de módulo a partir de código de alto nivel](#vitis-hls-generación-de-módulo-a-partir-de-código-de-alto-nivel)
     1. [Creación de proyecto en Vitis HLS](#1-creación-de-proyecto-en-vitis-hls)
-      - [Generación proyecto](#generación-proyecto)
-      - [Añadiendo sources](#añadiendo-sources)
-      - [Añadiendo testbench](#añadiendo-testbench)
-      - [Configuración de la solución y selección de hardware target](configuración-de-la-solución-y-selección-de-hardware-target)
+        - [Generación proyecto](#generación-proyecto)
+        - [Añadiendo sources](#añadiendo-sources)
+        - [Añadiendo testbench](#añadiendo-testbench)
+        - [Configuración de la solución y selección de hardware target](configuración-de-la-solución-y-selección-de-hardware-target)
     2. [Simulación del código de alto nivel](#2-simulación-del-código-de-alto-nivel)
     3. [Síntesis](#3-síntesis)
     4. [Co-Simulación](#4-co-simulación)
@@ -251,7 +251,7 @@ Como se puede apreciar, al revisar las sources del proyecto, el módulo `op_modu
   <img src="graphic_rsrc/synth_ip.png">
 </p>
 
-5. Se desplegará un menú para la generación del módulo IP. Note que se da acceso a un _Instatation Template_, se recomienda utilizar éste como base en conjunto con el script e instrucciones para uso provistas en el [README.md](/hls/vitis_hls/utils/README.md) de la sección _/hls/vitis_hls/utils_, dado que asignar cada bus (vectores A y B) de forma individual para cada una de las 2048 entradas. Para finalizar, se da click en _Generate_.
+5. Se desplegará un menú para la generación del módulo IP. Note que se da acceso a un _Instatation Template_, se recomienda utilizar éste como base en conjunto con el script e instrucciones para uso provistas en el [README.md](/hls/utils/README.md) de la sección _/hls/vitis_hls/utils_, dado que asignar cada bus (vectores A y B) de forma individual para cada una de las 2048 entradas. Para finalizar, se da click en _Generate_.
 
 <p align="center">
   <img src="graphic_rsrc/ip_ok.png">
