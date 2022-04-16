@@ -10,7 +10,7 @@ En las siguientes secciones se explora el código que será utilizado en _Vitis 
         - [Array Partition](#array-partition)
         - [Unroll](#unroll)
     4. [Optimización del cálculo de diferencia](#optimización-del-cálculo-de-diferencia)
-
+2. [Métricas del testbench](#métricas-del-testbench)
 ## Optimización del código
 
 El módulo a implementar puede ser descrito de manera muy básica mediante el siguiente código, desde una mirada del alto nivel:
@@ -173,14 +173,17 @@ De esta forma se llega a la implementación descrita en [`eucMod.cpp`](eucMod.cp
 |-|-|-|-|-|-|
 | 20| 0 | ~0 | 5 | 62 | 0 |
 
-Finalmente, se obtiene una **mejora de 1 ciclo** en realación a la implementación anterior, en términos de recursos, se logra bajar el uso de _FFs_ en 11% y de _LUTs_ en un 88%, dejando suficientes recursos teóricamente, para la implementación del resto de lógica asociada. 
+Finalmente, se obtiene una **mejora de 1 ciclo** en realación a la implementación anterior, en términos de recursos, se logra bajar el uso de _FFs_ en 11% y de _LUTs_ en un 88%, dejando suficientes recursos teóricamente, para la implementación del resto de lógica asociada.
 
 
-## Testbench
-La comparación realizada busca encontrar dos métricas de comparación, en primer lugar un error directo, que corresponde al valor absoluto entre el resultado esperado (obtenido mediante el cálculo de valores desde la goldenReference) y el valor obtenido desde el módulo inferido. En segundo lugar, se obtiene una métrica de error relativo, la cual es simplemente el porcentaje obtenido del error directo, sobre el valor esperado. En resumen:
+## Métricas del testbench
+
+El [testbench.cpp](testbench.cpp) incluido busca encontrar dos métricas de comparación, en primer lugar un error directo, que corresponde al valor absoluto entre el resultado esperado (obtenido mediante el cálculo de valores desde la goldenReference) y el valor obtenido desde el módulo inferido. En segundo lugar, se obtiene una métrica de error relativo, la cual es simplemente el porcentaje obtenido del error directo, sobre el valor esperado. En resumen:
 
 ```
 errorDirecto = Esperado - Obtenido
 
 errorRelativo = 100*errorDirecto/Esperado
 ```
+
+Si alguna de estas métricas supera la tolerancia definida, por defecto `TOL 1.0`, el testbench fallará.
