@@ -10,6 +10,8 @@ En la Figura, se puede ver el bloque que se espera implementar. Como entrada, lo
 
 Un análisis más fino del código utilizado para la síntesis de alto nivel, se puede encontrar en el [README](/hls/vitis_hls/README.md) de la carpeta _vitis_hls_.
 
+Referencias de como comunicarse con el coprocesador puede ser encontrada en el [README](/hls/host_scripts/README.md) dentro de la carpeta _host_scripts_.
+
 ## Índice
 
 - [Requisitos](#requisitos)
@@ -35,6 +37,8 @@ Un análisis más fino del código utilizado para la síntesis de alto nivel, se
       - [Frecuencia de Operación](#frecuencia-de-operación)
       - [Latencia y Throughput](#latencia-y-throughput)
       - [Uso de recursos](#uso-de-recursos)
+- [Tiempos desde síntesis en Vitis HLS a bitstream en Vivado](#tiempos-desde-síntesis-en-vitis-hls-a-bitstream-en-vivado)
+
 ## Requisitos:
 
 Para poder seguir las instrucciones que se listaran a continuación es necesario tener previamente instalado una versión de **Vivado y Vitis HLS.** Durante el desarrollo de este tutorial se estuvo trabajando con las versiones otorgadas por Xilinx: 2021.1
@@ -318,3 +322,19 @@ A continuación se detalla el uso de recursos para la implementación completa d
 | DSP|	240|	240|	100.0|
 |IO|	21|	210|	10.0|
 |BUFG	|2	|32|	6.25|
+
+## Tiempos desde síntesis en Vitis HLS a bitstream en Vivado
+
+En esta sección se reportan los tiempos asociados a las distintas etapas del proceso de síntesis, implementación y generación de bitstream:
+
+|**Programa**|**Proceso**|**Tiempo** _s_|**Tiempo Acumulado** _s_|
+|------------|-----------|--------------|-----------------|
+| Vitis HLS | Simulación | 11.23 | 11.23 |
+| Vitis HLS | Síntesis | 453.61 | 464.84 |
+| Vitis HLS | Co-Simulación | 615.32 | 1080.16 |
+| Vitis HLS | Export RTL | 406.09 | 1486.25 |
+| Vivado | Síntetis | 181 | 1667.25 |
+| Vivado | Implementación | 270 | 1937.25 |
+| Vivado | Bitsream | 40 | **1977.25** |
+
+Por lo que un proceso completo, siguiendo el tutorial tomaría aproximadamente 32 minutos, de principio a fin.
