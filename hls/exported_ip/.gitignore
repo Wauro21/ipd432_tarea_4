@@ -1,0 +1,4 @@
+# ignore everything except the zipfile
+!eucDis.zip
+!README.md
+!.gitignore
