@@ -1,4 +1,15 @@
 # Análisis del código utilizado
+En las siguientes secciones se explora el código que será utilizado en _Vitis HLS_.
+
+## Índice
+
+1. [Optimización del código](#optimización-del-código)
+  1. [Optimización operación raíz: Vitis HLS Math](#optimización-operación-raíz-vitis-hls-math)
+  2. [Uso de arbitrary precission data types: Vitis HLS ap_int](#uso-de-arbitrary-precission-data-types-vitis-hls-ap_int)
+  3. [Pragmas utilizados](#pragmas-utilizados)
+    - [Array Partition](#array-partition)
+    - [Unroll](#unroll)
+  4. [Optimización del cálculo de diferencia](#optimización-del-cálculo-de-diferencia)
 
 ## Optimización del código
 
@@ -50,10 +61,10 @@ A partir de este cambio, se puede obtener **una mejora de 57 ciclos**, en relaci
 _Vitis HLS_ ofrece una biblioteca ([Vitis HLS ap_int](https://docs.xilinx.com/r/en-US/ug1399-vitis-hls/Using-Arbitrary-Precision-Data-Types)) que permite trabajar con variables de una tamaño determinado de _bits_,de esta manera optimizando el uso de recursos a bajo nivel. En este caso, tenemos que la variable acumuladora `temp` es de tipo `uint32_t` (definida por `<cstdint>`), sin embargo, si analizamos el máximo valor requerido:
 
 ```
-clog2(255*sqrt(1024))= 26
+clog2(255*255*1024)= 26
 ```
 
-Se tiene que en el peor de los casos, para representar la salida, se utilizaran 26 _bits_, por lo que se puede ajustar el código para trabajar con este tamaño:
+Se tiene que en el peor de los casos, para representar el acumulador, se utilizaran 26 _bits_, por lo que se puede ajustar el código para trabajar con este tamaño:
 
 ```cpp
 void eucDis(INPUT A[VECTOR_LENGTH], INPUT B[VECTOR_LENGTH], OUTPUT* C){
@@ -70,7 +81,7 @@ Sintetizando:
 |-|-|-|-|-|-|
 | 1035| 0 | ~0 | ~0 | 1 | 0 |
 
-Se logra una **reducción de 3 ciclos ** en términos de latencia y un 1% menos de uso de recursos en el caso *LUTs*.
+Se logra una **reducción de 3 ciclos** en términos de latencia y un 1% menos de uso de recursos en el caso *LUTs*.
 
 ### Pragmas utilizados
 
@@ -110,12 +121,35 @@ Este _pragma_ permite desenrrollar el _loop_, para que las operaciones se hagan 
 ```
 Donde X es el número de elementos que se desenrrollan, en nuestro caso por ejemplo, se podría escoger X= 2, con un _loop_ de 1024 iteraciones, significa que se harían 512 operaciones en un ciclo y luego se harían otras 512. **Realizando pruebas, se encontró que para este modulo un factor de X = 128, permitía maximizar el número de ciclos, manteniendo un uso de recursos razonable, factores superiores como X>=256, disminuían uno o dos ciclos, con el costo de un uso de recursos estimado cercano al 80%, es por esto que se optó por el valor X=128.** De esta forma el código queda de la siguiente manera:
 
-```
+```cpp
+void eucDis(INPUT A[VECTOR_LENGTH], INPUT B[VECTOR_LENGTH], OUTPUT* C){
+    #pragma HLS ARRAY_PARTITION variable=A type=complete  dim=1
+    #pragma HLS ARRAY_PARTITION variable=B type=complete dim=1
+    ap_uint<26> temp = 0;
+    eachElement:for(int index = 0; index < VECTOR_LENGTH; index ++){
+      #pragma HLS unroll factor=128
+      temp += (A[index]-B[index])*(A[index]-B[index]);
+    }
+    C[0] = hls::sqrt(temp);
+}
 ```
 
 | **Latencia** _ciclos_ | **BRAM** _%_ | **DSP** _%_ | **FF** _%_ | **LUT** _%_ | **URAM** _%_ |
 |-|-|-|-|-|-|
-| 21| 0 | ~0 | ~0 | 10 | 0 |
+| 21| 0 | ~0 | 16 | 150 | 0 |
+
+Se obtiene una **mejora de 1014 ciclos** en relación a la implementación anterior, el uso de recursos aumenta de forma considerable, requiriendo incluso más _LUTs_ de las disponibles (Exceso del 50%), sin embargo, a nivel de código aún queda una mejora realizable que permite solventar este exceso.
+
+### Optimización del cálculo de diferencia
+
+Durante la etapa de desarrollo, el uso excesivo de recursos se manifestaba como un uso de DSP del 200%, dado que se estaba trabajando con _uint32_t_ (en etapas casi finales del desarrollo se hizo el cambio a los tipos _ap_int_) como tipo de la variable acumuladora y las operaciones con signo asociadas requerían el uso de DSP al momento de la implementación. **La solución descrita a continuación tiene su origen en el problema anteriormente descrito, sin embargo, para la versión actual que trabaja con variable de tipo _ap_int_ sigue siendo válida, dado que la operación con signo si bien no se manifiesta como un uso excesivo de DSP, si lo hace mediante un uso de 150% de las _LUTs_ disponibles.**
+
+Para la optimización final, es necesario evitar que se tenga operaciones que resulten en un valor con signo, por ejemplo en el caso que A[n] = 124 y B[n] = 200, de la forma en la que se implementa el cálculo de la distancia, se obtendría un resultado parcial con signo, -76, sin embargo, como sólo interesa la diferencia entre los valores se puede realizar el cálculo considerando primero el valor mayor y a este restarle el menor. Realizando esto en el código:
+
+```
+
+```
+
 
 ## Testbench
 La comparación realizada busca encontrar dos métricas de comparación, en primer lugar un error directo, que corresponde al valor absoluto entre el resultado esperado (obtenido mediante el cálculo de valores desde la goldenReference) y el valor obtenido desde el módulo inferido. En segundo lugar, se obtiene una métrica de error relativo, la cual es simplemente el porcentaje obtenido del error directo, sobre el valor esperado. En resumen:
