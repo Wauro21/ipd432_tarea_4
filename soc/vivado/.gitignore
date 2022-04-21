@@ -1,0 +1,5 @@
+#Ignore project folder
+coprocesor_32/
+
+#Ignore internal exported folders
+1024_int/
