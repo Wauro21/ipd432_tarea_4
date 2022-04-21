@@ -1,0 +1,16 @@
+#  Ignore for Vitis HLS project folder
+
+# Ignore logs generated
+**/*.log
+
+#Ignore not-related folder
+**/csim/
+**/impl/
+**/sim/
+**/syn
+
+# Ignore hiddenfolder and hiddenfiles
+**/.*/
+
+# Ignore vitis str
+*.str
