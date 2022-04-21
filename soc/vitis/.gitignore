@@ -2,3 +2,6 @@
 *
 !main.c
 !.gitignore
+
+#while debuggin
+!eucdis_32_float/src/main_float.c
