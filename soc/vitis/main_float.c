@@ -120,35 +120,34 @@ int main(void) {
 
 	  for (int i = 0; i < n_trials; i++)
 	  {
-		double sum = 0;
-		float result_sw;
+      double sum = 0;
+      float result_sw;
+      GenVectors(A_data, B_data);
+      
+      // PS processing
+      XGpioPs_WritePin(&gpio, out_pin, 0x1);
+      for (int i = 0; i < VECTOR_SIZE; i++) {
+        sum += (double)((A_data[i] - B_data[i]) * (A_data[i] - B_data[i]));
+      }
+      result_sw = (float)sqrt(sum);
+      XGpioPs_WritePin(&gpio, out_pin, 0x0);
+      printf("%f,", result_sw);
 
-		GenVectors(A_data, B_data);
+      // Delay
+      for (int i = 0; i < 10000; i++);
 
-		XGpioPs_WritePin(&gpio, out_pin, 0x1);
-		// PS processing
-		for (int i = 0; i < VECTOR_SIZE; i++) {
-		  sum += (double)((A_data[i] - B_data[i]) * (A_data[i] - B_data[i]));
-		}
-		result_sw = (float)sqrt(sum);
-		XGpioPs_WritePin(&gpio, out_pin, 0x0);
-		printf("%f,", result_sw);
+      // PL processing
+      XGpioPs_WritePin(&gpio, out_pin, 0x1);
+      ip_status = 0x01;
+      TxVectors(&eucdis_ip, A_data, B_data);
 
-		// Delay
-		for (int i = 0; i < 10000; i++);
+      XEucdis32_float_Start(&eucdis_ip);
+      while (ip_status);
+      XGpioPs_WritePin(&gpio, out_pin, 0x0);
+      printf("%f\n", rx_data[0]);
 
-		// PL processing
-		XGpioPs_WritePin(&gpio, out_pin, 0x1);
-		ip_status = 0x01;
-		TxVectors(&eucdis_ip, A_data, B_data);
-
-		XEucdis32_float_Start(&eucdis_ip);
-		while (ip_status);
-		XGpioPs_WritePin(&gpio, out_pin, 0x0);
-		printf("%f\n", rx_data[0]);
-
-		// Delay
-		for (int i = 0; i < 10000; i++);
+      // Delay
+      for (int i = 0; i < 10000; i++);
 	  }
   }
 

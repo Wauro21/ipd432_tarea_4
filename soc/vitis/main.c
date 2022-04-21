@@ -108,50 +108,51 @@ int main(void) {
 		return XST_FAILURE;
 	}
 
-  //printf((char *)"Started...\n");
-  u16 n_trials = Get_16bitData();
-  u16 seed = Get_16bitData();
+  while (1) {
+    u16 n_trials = Get_16bitData();
+    u16 seed = Get_16bitData();
 
-  srand(seed);
+    srand(seed);
 
-  for (int i = 0; i < n_trials; i++)
-  {
-    GenVectors(A_data, B_data);
+    for (int i = 0; i < n_trials; i++)
+    {
+      double sum = 0;
+      u32 result_sw;
+      GenVectors(A_data, B_data);
 
-    XGpioPs_WritePin(&gpio, out_pin, 0x1);
-    // PS processing
-    double sum = 0;
-    u32 result_sw;
-    for (int i = 0; i < VECTOR_SIZE; i++) {
-      sum += (double)((A_data[i] - B_data[i]) * (A_data[i] - B_data[i]));
+      // PS processing
+      XGpioPs_WritePin(&gpio, out_pin, 0x1);
+      for (int i = 0; i < VECTOR_SIZE; i++) {
+        sum += (double)((A_data[i] - B_data[i]) * (A_data[i] - B_data[i]));
+      }
+      result_sw = (u32)sqrt(sum);
+      XGpioPs_WritePin(&gpio, out_pin, 0x0);
+      printf("%lu,", result_sw);
+
+      // Delay
+      for (int i = 0; i < 10000; i++);
+
+      // PL processing
+      XGpioPs_WritePin(&gpio, out_pin, 0x1);
+      ip_status = 0x01;
+      TxVectors(&eucdis_ip, A_data, B_data);
+
+      XEucdis32_int_Start(&eucdis_ip);
+      while (ip_status);
+      XGpioPs_WritePin(&gpio, out_pin, 0x0);
+      printf("%lu\n", rx_data[0]);
+
+      // Delay
+      for (int i = 0; i < 10000; i++);
     }
-    result_sw = (u32)sqrt(sum);
-    XGpioPs_WritePin(&gpio, out_pin, 0x0);
-    printf("%lu,", result_sw);
+  }  
 
-    // Delay
-    for (int i = 0; i < 10000; i++);
-
-    // PL processing
-    XGpioPs_WritePin(&gpio, out_pin, 0x1);
-    ip_status = 0x01;
-    TxVectors(&eucdis_ip, A_data, B_data);
-    XEucdis32_int_Start(&eucdis_ip);
-    while (ip_status);
-    XGpioPs_WritePin(&gpio, out_pin, 0x0);
-    printf("%lu\n", rx_data[0]);
-
-    // Delay
-    for (int i = 0; i < 10000; i++);
-  }
-
-  while(1);
   return 0;
 }
 
-// just 1 byte for now
 u16 Get_16bitData() {
-  u16 data = (u16)inbyte();
+  u16 data = ((u16)inbyte() << 8);
+  data |= (u16)inbyte();
 
   return data;
 }
@@ -171,8 +172,8 @@ void TxVectors(XEucdis32_int *instance_ptr, int vec_a[VECTOR_SIZE], int vec_b[VE
   for (int bram = 0; bram < BRAMS; bram++) {
     for (int buf_pos = 0; buf_pos < BUFFER_SIZE; buf_pos++) {
       u16 t_pos = buf_pos * BRAMS + bram;
-      tx_A_data[buf_pos] = t_pos < VECTOR_SIZE ? ((u32*) vec_a[t_pos]): 0;
-      tx_B_data[buf_pos] = t_pos < VECTOR_SIZE ? ((u32*) vec_b[t_pos]) : 0;
+      tx_A_data[buf_pos] = t_pos < VECTOR_SIZE ? ((u32)vec_a[t_pos]): 0;
+      tx_B_data[buf_pos] = t_pos < VECTOR_SIZE ? ((u32)vec_b[t_pos]): 0;
     }
     XEucdis32_int_Write_A[bram](instance_ptr, 0, tx_A_data, BUFFER_SIZE);
     XEucdis32_int_Write_B[bram](instance_ptr, 0, tx_B_data, BUFFER_SIZE);

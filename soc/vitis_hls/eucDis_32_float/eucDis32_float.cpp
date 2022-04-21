@@ -11,7 +11,7 @@ void eucDis32_float(INPUT A[VECTOR_LENGTH], INPUT B[VECTOR_LENGTH], OUTPUT *C){
   INTER inter_result = 0;
   eachElement:for(int index = 0; index < VECTOR_LENGTH; index++){
     #pragma HLS unroll factor = 64
-    #pragma HLS pipeline II=512
+    #pragma HLS pipeline II=128
     inter_result += (A[index]-B[index])*(A[index]-B[index]);
 
   }
