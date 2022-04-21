@@ -3,7 +3,8 @@
 
 #define VECTOR_LENGTH 1024
 
-#include "hls_math.h"
+//#include "hls_math.h"
+#include "math.h"
 
 typedef float INPUT;
 typedef float OUTPUT;

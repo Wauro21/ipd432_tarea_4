@@ -12,13 +12,13 @@
     },
     "design_tree": {
       "processing_system7_0": "",
-      "eucDis32_float_0": "",
       "ps7_0_axi_periph": {
         "s00_couplers": {
           "auto_pc": ""
         }
       },
-      "rst_ps7_0_71M": ""
+      "rst_ps7_0_71M": "",
+      "eucDis32_float_0": ""
     },
     "interface_ports": {
       "DDR": {
@@ -92,7 +92,7 @@
       "processing_system7_0": {
         "vlnv": "xilinx.com:ip:processing_system7:5.5",
         "xci_name": "design_1_processing_system7_0_0",
-        "xci_path": "ip/design_1_processing_system7_0_0/design_1_processing_system7_0_0.xci",
+        "xci_path": "ip\\design_1_processing_system7_0_0\\design_1_processing_system7_0_0.xci",
         "inst_hier_path": "processing_system7_0",
         "parameters": {
           "PCW_ACT_APU_PERIPHERAL_FREQMHZ": {
@@ -1004,15 +1004,9 @@
           }
         }
       },
-      "eucDis32_float_0": {
-        "vlnv": "xilinx.com:hls:eucDis32_float:1.0",
-        "xci_name": "design_1_eucDis32_float_0_0",
-        "xci_path": "ip/design_1_eucDis32_float_0_0/design_1_eucDis32_float_0_0.xci",
-        "inst_hier_path": "eucDis32_float_0"
-      },
       "ps7_0_axi_periph": {
         "vlnv": "xilinx.com:ip:axi_interconnect:2.1",
-        "xci_path": "ip/design_1_ps7_0_axi_periph_0/design_1_ps7_0_axi_periph_0.xci",
+        "xci_path": "ip\\design_1_ps7_0_axi_periph_0\\design_1_ps7_0_axi_periph_0.xci",
         "inst_hier_path": "ps7_0_axi_periph",
         "xci_name": "design_1_ps7_0_axi_periph_0",
         "parameters": {
@@ -1131,7 +1125,7 @@
               "auto_pc": {
                 "vlnv": "xilinx.com:ip:axi_protocol_converter:2.1",
                 "xci_name": "design_1_auto_pc_0",
-                "xci_path": "ip/design_1_auto_pc_0/design_1_auto_pc_0.xci",
+                "xci_path": "ip\\design_1_auto_pc_0\\design_1_auto_pc_0.xci",
                 "inst_hier_path": "ps7_0_axi_periph/s00_couplers/auto_pc",
                 "parameters": {
                   "MI_PROTOCOL": {
@@ -1226,8 +1220,14 @@
       "rst_ps7_0_71M": {
         "vlnv": "xilinx.com:ip:proc_sys_reset:5.0",
         "xci_name": "design_1_rst_ps7_0_71M_0",
-        "xci_path": "ip/design_1_rst_ps7_0_71M_0/design_1_rst_ps7_0_71M_0.xci",
+        "xci_path": "ip\\design_1_rst_ps7_0_71M_0\\design_1_rst_ps7_0_71M_0.xci",
         "inst_hier_path": "rst_ps7_0_71M"
+      },
+      "eucDis32_float_0": {
+        "vlnv": "xilinx.com:hls:eucDis32_float:1.0",
+        "xci_name": "design_1_eucDis32_float_0_1",
+        "xci_path": "ip\\design_1_eucDis32_float_0_1\\design_1_eucDis32_float_0_1.xci",
+        "inst_hier_path": "eucDis32_float_0"
       }
     },
     "interface_nets": {
@@ -1269,9 +1269,9 @@
           "processing_system7_0/M_AXI_GP0_ACLK",
           "ps7_0_axi_periph/S00_ACLK",
           "rst_ps7_0_71M/slowest_sync_clk",
-          "eucDis32_float_0/ap_clk",
           "ps7_0_axi_periph/M00_ACLK",
-          "ps7_0_axi_periph/ACLK"
+          "ps7_0_axi_periph/ACLK",
+          "eucDis32_float_0/ap_clk"
         ]
       },
       "processing_system7_0_FCLK_RESET0_N": {
@@ -1284,9 +1284,9 @@
         "ports": [
           "rst_ps7_0_71M/peripheral_aresetn",
           "ps7_0_axi_periph/S00_ARESETN",
-          "eucDis32_float_0/ap_rst_n",
           "ps7_0_axi_periph/M00_ARESETN",
-          "ps7_0_axi_periph/ARESETN"
+          "ps7_0_axi_periph/ARESETN",
+          "eucDis32_float_0/ap_rst_n"
         ]
       }
     },

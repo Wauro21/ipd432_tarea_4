@@ -17,7 +17,7 @@
 
 #define GPIO_DEVICE_ID      XPAR_XGPIOPS_0_DEVICE_ID
 
-#define EUC_RAND_FACTOR     ((double)1 / (double)RAND_MAX)
+#define EUC_RAND_FACTOR     ((float)1 / (float)RAND_MAX)
 
 #define VECTOR_SIZE				  1024
 #define BUFFER_SIZE				  64
@@ -65,9 +65,11 @@ void (*XEucdis32_float_Write_B[])() = {XEucdis32_float_Write_B_0_Words,
                                XEucdis32_float_Write_B_15_Words};
 
 
-float tx_A_data[BUFFER_SIZE];
-float tx_B_data[BUFFER_SIZE];
+u32 tx_A_data[BUFFER_SIZE];
+u32 tx_B_data[BUFFER_SIZE];
 float rx_data[2];
+
+u32 tx_DEBUG_data[BUFFER_SIZE];
 
 float A_data[VECTOR_SIZE], B_data[VECTOR_SIZE];
 volatile int ip_status;
@@ -120,10 +122,10 @@ int main(void) {
 
     XGpioPs_WritePin(&gpio, out_pin, 0x1);
     // PS processing
-    float sum = 0;
+    double sum = 0;
     float result_sw;
     for (int i = 0; i < VECTOR_SIZE; i++) {
-      sum += (float)((A_data[i] - B_data[i]) * (A_data[i] - B_data[i]));
+      sum += (double)((A_data[i] - B_data[i]) * (A_data[i] - B_data[i]));
     }
     result_sw = (float)sqrt(sum);
     XGpioPs_WritePin(&gpio, out_pin, 0x0);
@@ -136,6 +138,9 @@ int main(void) {
     XGpioPs_WritePin(&gpio, out_pin, 0x1);
     ip_status = 0x01;
     TxVectors(&eucdis_ip, A_data, B_data);
+
+    XEucdis32_float_Read_A_15_Words(&eucdis_ip, 0, tx_DEBUG_data, BUFFER_SIZE);
+
     XEucdis32_float_Start(&eucdis_ip);
     while (ip_status);
     XGpioPs_WritePin(&gpio, out_pin, 0x0);
@@ -156,8 +161,9 @@ u16 Get_16bitData() {
   return data;
 }
 
+u32 result;
 void EucDis_ReceiveHandler(void *instance_ptr) {
-  u32 result;
+
   XEucdis32_float_InterruptDisable(instance_ptr, 1);
 
   result = XEucdis32_float_Get_C(instance_ptr);
@@ -173,8 +179,8 @@ void TxVectors(XEucdis32_float *instance_ptr, float vec_a[VECTOR_SIZE], float ve
   for (int bram = 0; bram < BRAMS; bram++) {
     for (int buf_pos = 0; buf_pos < BUFFER_SIZE; buf_pos++) {
       u16 t_pos = buf_pos * BRAMS + bram;
-      tx_A_data[buf_pos] = t_pos < VECTOR_SIZE ? (vec_a[t_pos]): 0;
-      tx_B_data[buf_pos] = t_pos < VECTOR_SIZE ? (vec_b[t_pos]) : 0;
+      tx_A_data[buf_pos] = t_pos < VECTOR_SIZE ? *((u32 *) &vec_a[t_pos]): 0;
+      tx_B_data[buf_pos] = t_pos < VECTOR_SIZE ? *((u32 *) &vec_b[t_pos]): 0;
     }
     XEucdis32_float_Write_A[bram](instance_ptr, 0, tx_A_data, BUFFER_SIZE);
     XEucdis32_float_Write_B[bram](instance_ptr, 0, tx_B_data, BUFFER_SIZE);

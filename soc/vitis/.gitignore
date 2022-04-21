@@ -1,6 +1,8 @@
 # Everything except main file
 *
 !main.c
+!main_float.c
+!super_host_cmd.py
 !.gitignore
 
 #while debuggin

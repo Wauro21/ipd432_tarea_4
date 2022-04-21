@@ -1,10 +1,10 @@
 // Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2021.1 (lin64) Build 3247384 Thu Jun 10 19:36:07 MDT 2021
-// Date        : Thu Apr 21 02:34:08 2022
+// Date        : Thu Apr 21 02:34:07 2022
 // Host        : tarro running 64-bit elementary OS 6.1 Jólnir
-// Command     : write_verilog -force -mode synth_stub
-//               /mnt/shared/Linux/gdrive/usm/2021-s2/ipd432/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.gen/sources_1/bd/design_1/ip/design_1_auto_pc_0/design_1_auto_pc_0_stub.v
+// Command     : write_verilog -force -mode synth_stub -rename_top design_1_auto_pc_0 -prefix
+//               design_1_auto_pc_0_ design_1_auto_pc_0_stub.v
 // Design      : design_1_auto_pc_0
 // Purpose     : Stub declaration of top-level module interface
 // Device      : xc7z010clg400-1

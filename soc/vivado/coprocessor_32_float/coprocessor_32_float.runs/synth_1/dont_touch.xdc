@@ -7,16 +7,16 @@ set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==design_1 ||
 # IP: bd/design_1/ip/design_1_processing_system7_0_0/design_1_processing_system7_0_0.xci
 set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==design_1_processing_system7_0_0 || ORIG_REF_NAME==design_1_processing_system7_0_0} -quiet] -quiet
 
-# IP: bd/design_1/ip/design_1_eucDis32_float_0_0/design_1_eucDis32_float_0_0.xci
-set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==design_1_eucDis32_float_0_0 || ORIG_REF_NAME==design_1_eucDis32_float_0_0} -quiet] -quiet
-
-# IP: bd/design_1/ip/design_1_auto_pc_0/design_1_auto_pc_0.xci
-set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==design_1_auto_pc_0 || ORIG_REF_NAME==design_1_auto_pc_0} -quiet] -quiet
-
 # IP: bd/design_1/ip/design_1_ps7_0_axi_periph_0/design_1_ps7_0_axi_periph_0.xci
 set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==design_1_ps7_0_axi_periph_0 || ORIG_REF_NAME==design_1_ps7_0_axi_periph_0} -quiet] -quiet
 
 # IP: bd/design_1/ip/design_1_rst_ps7_0_71M_0/design_1_rst_ps7_0_71M_0.xci
 set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==design_1_rst_ps7_0_71M_0 || ORIG_REF_NAME==design_1_rst_ps7_0_71M_0} -quiet] -quiet
 
-# XDC: /mnt/shared/Linux/gdrive/usm/2021-s2/ipd432/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.gen/sources_1/bd/design_1/design_1_ooc.xdc
+# IP: bd/design_1/ip/design_1_auto_pc_0/design_1_auto_pc_0.xci
+set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==design_1_auto_pc_0 || ORIG_REF_NAME==design_1_auto_pc_0} -quiet] -quiet
+
+# IP: bd/design_1/ip/design_1_eucDis32_float_0_1/design_1_eucDis32_float_0_1.xci
+set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==design_1_eucDis32_float_0_1 || ORIG_REF_NAME==design_1_eucDis32_float_0_1} -quiet] -quiet
+
+# XDC: e:/Magisterio/IPD-432/Tarea_4/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.gen/sources_1/bd/design_1/design_1_ooc.xdc

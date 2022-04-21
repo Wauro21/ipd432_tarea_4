@@ -17,7 +17,7 @@ proc create_report { reportName command } {
   }
 }
 namespace eval ::optrace {
-  variable script "/mnt/shared/Linux/gdrive/usm/2021-s2/ipd432/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.runs/impl_1/design_1_wrapper.tcl"
+  variable script "E:/Magisterio/IPD-432/Tarea_4/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.runs/impl_1/design_1_wrapper.tcl"
   variable category "vivado_impl"
 }
 
@@ -122,28 +122,28 @@ start_step init_design
 set ACTIVE_STEP init_design
 set rc [catch {
   create_msg_db init_design.pb
-  set_param chipscope.maxJobs 3
+  set_param chipscope.maxJobs 2
 OPTRACE "create in-memory project" START { }
   create_project -in_memory -part xc7z010clg400-1
-  set_property board_part_repo_paths {/home/mauricio/.Xilinx/Vivado/2021.1/xhub/board_store/xilinx_board_store} [current_project]
+  set_property board_part_repo_paths {C:/Users/Pablo/AppData/Roaming/Xilinx/Vivado/2021.1/xhub/board_store/xilinx_board_store} [current_project]
   set_property board_part digilentinc.com:zybo:part0:1.0 [current_project]
   set_property design_mode GateLvl [current_fileset]
   set_param project.singleFileAddWarning.threshold 0
 OPTRACE "create in-memory project" END { }
 OPTRACE "set parameters" START { }
-  set_property webtalk.parent_dir /mnt/shared/Linux/gdrive/usm/2021-s2/ipd432/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.cache/wt [current_project]
-  set_property parent.project_path /mnt/shared/Linux/gdrive/usm/2021-s2/ipd432/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.xpr [current_project]
-  set_property ip_repo_paths /mnt/shared/Linux/gdrive/usm/2021-s2/ipd432/ipd432_tarea_4/soc/vivado/ip_exported/eucDis32_float_1024 [current_project]
+  set_property webtalk.parent_dir E:/Magisterio/IPD-432/Tarea_4/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.cache/wt [current_project]
+  set_property parent.project_path E:/Magisterio/IPD-432/Tarea_4/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.xpr [current_project]
+  set_property ip_repo_paths E:/Magisterio/IPD-432/Tarea_4/ipd432_tarea_4/soc/vitis_hls/eucDis_32_float/solution1/impl [current_project]
   update_ip_catalog
-  set_property ip_output_repo /mnt/shared/Linux/gdrive/usm/2021-s2/ipd432/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.cache/ip [current_project]
+  set_property ip_output_repo E:/Magisterio/IPD-432/Tarea_4/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.cache/ip [current_project]
   set_property ip_cache_permissions {read write} [current_project]
   set_property XPM_LIBRARIES {XPM_CDC XPM_MEMORY} [current_project]
 OPTRACE "set parameters" END { }
 OPTRACE "add files" START { }
-  add_files -quiet /mnt/shared/Linux/gdrive/usm/2021-s2/ipd432/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.runs/synth_1/design_1_wrapper.dcp
+  add_files -quiet E:/Magisterio/IPD-432/Tarea_4/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.runs/synth_1/design_1_wrapper.dcp
   set_msg_config -source 4 -id {BD 41-1661} -limit 0
   set_param project.isImplRun true
-  add_files /mnt/shared/Linux/gdrive/usm/2021-s2/ipd432/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.srcs/sources_1/bd/design_1/design_1.bd
+  add_files E:/Magisterio/IPD-432/Tarea_4/ipd432_tarea_4/soc/vivado/coprocessor_32_float/coprocessor_32_float.srcs/sources_1/bd/design_1/design_1.bd
   set_param project.isImplRun false
 OPTRACE "read constraints: implementation" START { }
 OPTRACE "read constraints: implementation" END { }
