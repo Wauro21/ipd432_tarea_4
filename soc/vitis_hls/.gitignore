@@ -11,6 +11,13 @@
 
 # Ignore hiddenfolder and hiddenfiles
 **/.*/
+**/.*
+#Save ignore
+!.gitignore
 
 # Ignore vitis str
 *.str
+
+# Only need sources files
+**/solution1/
+**/hls.app
