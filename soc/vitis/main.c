@@ -23,6 +23,8 @@
 #define BUFFER_SIZE				  64
 #define BRAMS               16
 
+// #define DEBUG_VECTORS
+
 static u32 out_pin;
 XGpioPs gpio;
 XEucdis32_int eucdis_ip;
@@ -70,6 +72,7 @@ u32 rx_data[2];
 int A_data[VECTOR_SIZE], B_data[VECTOR_SIZE];
 volatile int ip_status;
 
+u16 Get_16bitData(void);
 void TxVectors(XEucdis32_int *instance_ptr, int vec_a[VECTOR_SIZE], int vec_b[VECTOR_SIZE]);
 int Intc_InitFunction(u16 device_id);
 void EucDis_ReceiveHandler(void *instance_ptr);
@@ -105,24 +108,52 @@ int main(void) {
 		return XST_FAILURE;
 	}
 
-  GenVectors(A_data, B_data);
-  TxVectors(&eucdis_ip, A_data, B_data);
+  //printf((char *)"Started...\n");
+  u16 n_trials = Get_16bitData();
+  u16 seed = Get_16bitData();
 
-  double sum = 0;
-  u32 result_sw;
+  srand(seed);
 
-  for (int i = 0; i < VECTOR_SIZE; i++) {
-    sum += (double)((A_data[i] - B_data[i]) * (A_data[i] - B_data[i]));
+  for (int i = 0; i < n_trials; i++)
+  {
+    GenVectors(A_data, B_data);
+
+    XGpioPs_WritePin(&gpio, out_pin, 0x1);
+    // PS processing
+    double sum = 0;
+    u32 result_sw;
+    for (int i = 0; i < VECTOR_SIZE; i++) {
+      sum += (double)((A_data[i] - B_data[i]) * (A_data[i] - B_data[i]));
+    }
+    result_sw = (u32)sqrt(sum);
+    XGpioPs_WritePin(&gpio, out_pin, 0x0);
+    printf("%lu,", result_sw);
+
+    // Delay
+    for (int i = 0; i < 10000; i++);
+
+    // PL processing
+    XGpioPs_WritePin(&gpio, out_pin, 0x1);
+    ip_status = 0x01;
+    TxVectors(&eucdis_ip, A_data, B_data);
+    XEucdis32_int_Start(&eucdis_ip);
+    while (ip_status);
+    XGpioPs_WritePin(&gpio, out_pin, 0x0);
+    printf("%lu\n", rx_data[0]);
+
+    // Delay
+    for (int i = 0; i < 10000; i++);
   }
-  u32 usum = (u32)sum;
-  result_sw = (u32)sqrt(sum);
-  printf("Resultado SW: %lu\n", result_sw);
 
-  ip_status = 0x01;
-  XEucdis32_int_Start(&eucdis_ip);
-  while (ip_status);
-
+  while(1);
   return 0;
+}
+
+// just 1 byte for now
+u16 Get_16bitData() {
+  u16 data = (u16)inbyte();
+
+  return data;
 }
 
 void EucDis_ReceiveHandler(void *instance_ptr) {
@@ -130,7 +161,6 @@ void EucDis_ReceiveHandler(void *instance_ptr) {
   XEucdis32_int_InterruptDisable(instance_ptr, 1);
 
   rx_data[0] = XEucdis32_int_Get_C(instance_ptr);
-  printf("Resultado HW: %lu\n\n", rx_data[0]);
 
   ip_status = 0x00;
   XEucdis32_int_InterruptClear(instance_ptr, 1);
@@ -153,7 +183,10 @@ void GenVectors(int vec_a[VECTOR_SIZE], int vec_b[VECTOR_SIZE]) {
   for (int i = 0; i < VECTOR_SIZE; i++) {
     vec_a[i] = (int) (((double)(rand() - (RAND_MAX/2))) * EUC_RAND_FACTOR);
     vec_b[i] = (int)(((double)(rand() - (RAND_MAX/2))) * EUC_RAND_FACTOR);
+
+#ifdef DEBUG_VECTORS
     printf("%d) A : %d\tB : %d \n", i, vec_a[i], vec_b[i]);
+#endif
   }
 }
 
