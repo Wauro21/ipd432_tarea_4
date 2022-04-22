@@ -17,7 +17,7 @@ En la siguiente sección se explicará el _workflow_ asociado al trabajo con sis
         4. [Co-Simulación](#4-co-simulación)
         5. [Exportar a Vivado](#5-exportar-a-vivado)
     - [Vivado: Creación de Proyecto usando el módulo exportado](#vivado-creación-de-proyecto-usando-el-módulo-exportado)
-        1. [Creación del proyecto](#creación-del-proyecto)
+        1. [Creación del proyecto](#1-creación-del-proyecto)
 
 
 ## Requisitos
@@ -261,3 +261,20 @@ Para la selección de plataforma, se debe ir a la pestaña _Boards_ y en el busc
 </p>
 
 El proyecto debe haber quedado configurado de la siguiente manera (variando únicamente el nombre en el caso del módulo flotante), luego de verificar se le da click a _Finish_.
+
+#### 2. Diseño por _Block Diagram_
+
+<p align="center">
+  <img src="graphic_rsrc/vivado_block_design.gif">
+</p>
+
+Se añade un diseño por bloques, para ello desde el menú **IP INTEGRATOR**, se hace click en la opción **Create Block Design**, lo que desplegará un menú dónde se pide darle nombre al diagrama, para cada módulo se tiene:
+
+| **Versión** | **Design Name** |
+|-------------|------------------|
+| _int_ | eucDis_32_int |
+| _float_ | eucDis_32_float|
+
+Luego de esto, se desplegará una ventana dónde se podran añadir los módulos para el diseño.
+
+#### 3. Añadiendo repositorio
