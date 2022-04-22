@@ -33,13 +33,18 @@ En la siguiente sección se explicará el _workflow_ asociado al trabajo con sis
         5. [Compilando el proyecto](#5-compilando-el-proyecto)
         6. [Carga de Bitstream y ejecutando el SoC](#6-carga-de-bitstream-y-ejecutando-en-el-soc)
         7. [Verificación funcionamiento](#7-verificación-funcionamiento)
+- [Proceso de medición latencia: PS y PL](#proceso-de-medición-latencia-ps-y-pl)
+    - [Uso puerto PMOD MIO](#uso-puerto-pmod-mio)
+    - [Captura de datos con analizador lógico](#captura-de-datos-con-analizador-lógico)
+    - [Procesado mediante script](#procesado-mediante-script)
+- [Resultados](#resultados)
 
 ## Requisitos
   El hardware utilizado para el presente tutorial corresponde a una tarjeta de desarrollo: **Zybo/Zynq -7000**, con un chip: **xc7z010clg400-1**.
 
 ## Instrucciones:
 
-A continuación se dejan las instrucciones para el _workflow_ completo. Se ilustrará el progreso utilizando como ejemplo la versión que funciona con números enteros, sin embargo, los pasos son análogos para la versión flotante y se dejarán comentarios explicitos de los cambios necesarios para cada caso.
+A continuación se dejan las instrucciones para el _workflow_ completo. Se ilustrará el progreso utilizando como ejemplo la versión que funciona con números enteros, sin embargo, los pasos son análogos para la versión flotante y se dejarán comentarios explícitos de los cambios necesarios para cada caso.
 
 ### Vitis HLS: Generación de módulo a partir de código de alto nivel
 
@@ -350,6 +355,8 @@ Dentro del mismo menú de configuraciones para el PS, para el caso del módulo q
 - En el menú lateral **Page Navigator**, seleccionar la opción **Clock Configuration**.
 - En el menú **PL Fabric Clocks**, en `FCLK_CLK0`, en el campo _Requested Frequency, ingresar 74.
 
+**Nota:** Si bien, durante la etapa de diseño en Vitis HLS, se encontró que el módulo no cumpliria con requisitos de _timming_ al utilizar un reloj de 10 ns, y por eso se deja esta sección para modificar el reloj de la parte PL a 13.5 ns, al momento de implementar en Vivado, se realizaron pruebas que llevaron a concluir que el módulo si puede cumplir con requisitos de _timing_ con un reloj de 10 ns. De esta forma, para los resultados reportados, se considerará este reloj.
+
 #### 6. Generando Wrapper y Bitstream
 <p align="center">
   <img src="graphic_rsrc/vivado_wrapper.gif">
@@ -471,3 +478,133 @@ Reemplazando `<port>` por el correspondiente, donde se encuentra conectada la `Z
 Como se puede ver, para cada trial se verifica que la diferencia entre el valor calculado y el valor esperado, sea menor que la tolerancia, definida en el código como `1`, si se cumple se le asigna `PASS` al trial. Al finalizar se reporta el error acumulado, el error promedio, su desviación estándar, así como también el error máximo y mínimo.
 
 ## Proceso de medición latencia: PS y PL
+
+Para realizar las mediciones de latencia, para los procesos de cálculo tanto en el PS como en el PL, se diseño un proceso de medición basado en señales obtenidas mediante un puerto PMOD y el uso de un analizado lógico. La captura de los datos es luego exportada y procesada mediante un script.
+
+### Uso puerto PMOD MIO
+
+Dentro de los puertos PMOD integrados en la tarjeta de desarrollo, existe uno, que está directamente conectado al módulo PS, permitiendo un control directo desde código. De esta forma, se puede enviar una señal de inicio (pin se levanta a 1) cuando se comienza una operación, ya sea, mediante PS o PL y se enviá una señal de término cuando se acaba la operación (pin se baja a 0). De esta forma, se puede, utilizando un analizador lógico externo conectado al PMOD controlado por PS, medir la duración de cada operación.
+
+<p align="center">
+  <img src="graphic_rsrc/mio_pmod.png">
+</p>
+
+El puerto **PMOD MIO** corresponde al ubicado más cercano a la entrada micro USB de la tarjeta de desarrollo. Justo debajo del mensaje `PROG UART`.
+
+<p align="center">
+  <img src="graphic_rsrc/pmod_diagram.png">
+</p>
+
+Para la medición se ha determinado utilizar los pines 1 y 2 para el envio de señales, según como se indica a continuación:
+
+| **Pin** | **Función** |
+|---------|-------------|
+| 1 | Envío señal operación PS |
+| 2 | Envío señal operación PL |
+
+Para su implementación en el código `main` que se ejecutará en el PS, se debe considerar la siguiente enumeración interna de los pines:
+
+<p align="center">
+  <img src="graphic_rsrc/pinoput_table.png">
+</p>
+
+En donde los pines se mapean de la siguiente forma:
+
+| **Pin en el PMOD** | **Períferico asociado** | **Pin código** |
+|--------------------|-------------------------|----------------|
+| 1 | JF01: MIO-13 | 13 |
+| 2 | JF02: MIO-10 | 10 |
+
+De esta forma, se definen dentro del código `main` el funcionamiento de los pines:
+```c
+config_ptr = XGpioPs_LookupConfig(GPIO_DEVICE_ID);
+out_pin = 13;
+hw_pin = 10;
+```
+
+Su comportamiento:
+```c
+XGpioPs_SetDirectionPin(&gpio, out_pin, 1);
+XGpioPs_SetOutputEnablePin(&gpio, out_pin, 1);
+XGpioPs_WritePin(&gpio, out_pin, 0x0);
+XGpioPs_SetDirectionPin(&gpio, hw_pin, 1);
+XGpioPs_SetOutputEnablePin(&gpio, hw_pin, 1);
+XGpioPs_WritePin(&gpio, hw_pin, 0x0);
+```
+
+Y su activación en el caso de la operación realizada en PS:
+```c
+// PS processing
+XGpioPs_WritePin(&gpio, out_pin, 0x1); // Pin en ALTO
+for (int i = 0; i < VECTOR_SIZE; i++) {
+  sum += (double)((A_data[i] - B_data[i]) * (A_data[i] - B_data[i]));
+}
+result_sw = (u32)sqrt(sum);
+XGpioPs_WritePin(&gpio, out_pin, 0x0);  // Pin en BAJO
+printf("%lu,", result_sw);
+```
+
+Y para la operación en PL:
+```c
+// PL processing
+XGpioPs_WritePin(&gpio, hw_pin, 0x1); // Pin en alto
+ip_status = 0x01;
+TxVectors(&eucdis_ip, A_data, B_data);
+XEucdis32_int_Start(&eucdis_ip);
+while (ip_status);
+XGpioPs_WritePin(&gpio, hw_pin, 0x0); // Pin en bajo
+```
+
+**Nota:** Esto se define acorde en cada uno de los `main` encontrado en la carpeta [/soc/vitis](/soc/vitis).
+
+### Captura de datos con analizador lógico
+
+Para realizar la captura de datos, se utiliza un analizador lógico externo conectado a los pines anteriormente descritos. En conjunto se utiliza el script `super_host_cmd.py` para poder realizar 1000 trials, para obtener los datos mientras se captura la información en el software del analizador.
+
+<p align="center">
+  <img src="graphic_rsrc/latency_measure.gif">
+</p>
+
+Para el proceso de medición se prepara:
+
+1. Una terminal, lista para correr el `super_host_cmd.py` con los siguientes argumentos
+```
+python super_host_cmd.py -port <port> -N 1000
+```
+**Se escoge `-N 1000` para realizar al 1000 trials en la medición.** `<port>` debe ser reemplazado por el puerto correspondiente.
+
+2. El software de saleae, preparado para realizar la captura, el cable 1 (negro) debe estar conectado al PIN 1 del PMOD y el cable 2 (café) debe estar conectado al PIN 2 del PMOD. **Esto debe respetarse dado que el script así asume el orden al momento de procesar. No respetar el orden puede hacer que las latencias se informen de manera inversa**.
+
+3. Se inicia la captura y luego se envia el comando por terminal para iniciar los trials. Una vez finalizado el trial y capturado el último cambio en los pines, se detiene la captura.
+
+4. Los datos se exportan, para ello desde el menú `File`, `Export data `
+
+<p align="center">
+  <img src="graphic_rsrc/export_opt.png">
+</p>
+
+5. Se desplegará un menú, se deben apagar todos los canales no usados, dejando sólo el 0 y 1. El formato debe ser **CSV**, luego se confirma _Export_.
+
+6. Con esto se generará un archivo `digital.csv` en el directorio de exportación, el cual se puede procesar
+
+### Procesado mediante script
+Para procesar los datos obtenidos desde el software de captura, se diseño un script `latency_analyzer.py` el cual permite obtener métricas acerca de la latencia obtenida para cada trial. Junto con este script, en la carpeta [/soc/utils](/soc/utils), se incluyen dos archivos de mediciones, que corresponden a mediciones de cada uno de los módulos implementados en este tutorial:
+
+| **Versión** | **Archivo** |
+|-------------|-------------|
+| _int_ | eucDis_32_int_latency_1000_trials.csv |
+| _float_ | eucDis_32_float_latency_1000_trials.csv |
+
+Para utilizar el script, bastá utilizar los siguientes comandos desde una terminal:
+```
+python latency_analyzer.py -if eucDis_32_int_latency_1000_trials.csv
+```
+
+Lo que entregará como resultado un análisis de la latencia diferenciada tanto para el PS como el PL, de la siguiente forma:
+```
+Results for latency
+PS: AVG Latency 63.23928899999865 us | ST.D Latency 0.025973206945959657 us | Min Latency 63.165999999892364 us | Max Latency 63.41700000001005 us
+PL: AVG Latency 468.95090899999764 us | ST.D Latency 0.3603007170669534 us | Min Latency 468.08299999989697 us | Max Latency 477.33399999994043 us
+
+```
+## Resultados
