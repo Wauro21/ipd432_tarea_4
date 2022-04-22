@@ -11,6 +11,7 @@ En la siguiente sección se explicará el _workflow_ asociado al trabajo con sis
             - [Generación proyecto](#generación-proyecto)
             - [Añadiendo sources](#añadiendo-sources)
             - [Añadiendo testbench](#añadiendo-testbench)
+            - [Configuración de la solución y selección de hardware target](#configuración-de-la-solución-y-selección-de-hardware target)
 
 ## Requisitos
   El hardware utilizado para el presente tutorial corresponde a una tarjeta de desarrollo: **Zybo/Zynq -7000**, con un chip: **xc7z010clg400-1**.
@@ -55,10 +56,39 @@ En este menú se podrán añadir los códigos fuentes, en este caso, corresponde
 
 | **Versión** | **Archivos a añadir**| **Ubicación archivos** |
 |-------------|----------------------|-------------|
-| _int_ | `eucDis32_int.cpp` y `eucDis32_int.h` | [soc/vitis_hls/eucDis32_int/](soc/vitis_hls/eucDis32_int/) |
-| _float_ | `eucDis32_float.cpp` y `eucDis32_float.h` | [soc/vitis_hls/eucDis32_float/](soc/vitis_hls/eucDis32_float/) |
+| _int_ | `eucDis32_int.cpp` y `eucDis32_int.h` | [soc/vitis_hls/eucDis32_int/](/soc/vitis_hls/eucDis32_int/) |
+| _float_ | `eucDis32_float.cpp` y `eucDis32_float.h` | [soc/vitis_hls/eucDis32_float/](/soc/vitis_hls/eucDis32_float/) |
 
 
 **Luego de esto**, en el apartado denominado _Top Function_, se hace click en _Browse_ para escoger la función principal, que tendrá el mismo nombre del archivo `.cpp` que se haya seleccionado (según versión). Finalmente se da click a _Next_.
 
 ##### Añadiendo testbench
+<p align="center">
+  <img src="graphic_rsrc/add_testbench.png">
+</p>
+
+
+En esta sección se añaden las pruebas a las que se someterá tanto el código implementada y el módulo generado en contraste con el código de alto nivel original. Para ello se diseñan dos archivos que se deben añadir, desde la carpeta respectiva de cada versión. **Los archivos comparten nombre sin embargo son distintos, por lo que se debe verificar si se están añadiendo los archivos de la carpeta correcta para cada versión**:
+
+| **Versión** | **Archivos a añadir**| **Ubicación archivos** |
+|-------------|----------------------|-------------|
+| _int_ | `testbench.cpp` y `_goldenreference.csv` | [soc/vitis_hls/eucDis32_int/](/soc/vitis_hls/eucDis32_int/) |
+| _float_ | `testbench.cpp` y `_goldenreference.csv` | [soc/vitis_hls/eucDis32_float/](/soc/vitis_hls/eucDis32_float/) |
+
+ **En primer lugar**, se debe añadir el archivo denominado _testbench.cpp_, este archivo contiene una prueba que compara el funcionamiento del código implementado en C++ para la obtención de la distancia Euclidiana entre los vectores A y B, y el módulo inferido a partir del código de alto nivel. **En segundo lugar**, se añade el archivo denominado _goldenreference.csv_, el cual tiene los vectores generados mediante el script [goldenGenerator.py](/hls/utils/goldenGenerator.py), los cuales son utilizados como entrada para el algoritmo de prueba. Detalles de la generación de estos valores de referencia pueden ser encontrados en el [README](/hls/utils/README.md) de la sección _utils_. Se le da click a _Next_ para continuar.
+
+#####  Configuración de la solución y selección de hardware target
+
+<p align="center">
+  <img src="graphic_rsrc/target_hardware.png">
+</p>
+
+En esta sección se puede dar un nombre a la solución a implementar y se puede dar la configuración del reloj. Para cada versión se eligen los siguientes parámetros:
+
+| **Versión** | **Solution Name** | **Clock Period**|
+|-------------|-------------------|-----------------|
+| _int_ | eucDis_32_int | 10 |
+| _flot_ | eucDis_32_float | 13.5|
+
+
+Finalmente, en la sección de _Part Selection_, se selecciona el hardware target, en ambos casos, se utiliza la placa de desarrollo **Zybo/Zynq -7000**, con un chip: **xc7z010clg400-1**. Finalmente se le da click a _Finish_ y se habrá configurado el proyecto de manera exitosa.
