@@ -1,0 +1,5 @@
+# Everything except main file
+*
+!main_int.c
+!main_float.c
+!.gitignore

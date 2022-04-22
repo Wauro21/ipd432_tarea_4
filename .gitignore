@@ -1,0 +1,5 @@
+# Ignore vivado log files
+*.jou
+*.log
+# Ignore hidden folder
+.Xil

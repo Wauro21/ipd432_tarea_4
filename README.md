@@ -7,7 +7,7 @@
 ## Estructura del Repositorio
 
 - **[HLS](/hls)**: Subdirectorio que contiene la sección de _High Level Synthesis_.
-- **SoC**: TBD
+- **[SoC](/soc)**: Subdirectorio que contiene la sección de _Sistema Heterogéneo_ en _SoC Zynq_. 
 
 ## Consideraciones previas
 
