@@ -14,6 +14,8 @@ En la siguiente sección se explicará el _workflow_ asociado al trabajo con sis
 
 ## Instrucciones:
 
+A continuación se dejan las instrucciones para el _workflow_ completo. Se ilustrará el progreso utilizando como ejemplo la versión que funciona con números enteros, sin embargo, los pasos son análogos para la versión flotante y se dejarán comentarios explicitos de los cambios necesarios para cada caso.
+
 ### Vitis HLS: Generación de módulo a partir de código de alto nivel
 
 #### 1. Creación de proyecto en Vitis HLS
