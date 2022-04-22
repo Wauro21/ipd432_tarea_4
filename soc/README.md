@@ -399,3 +399,67 @@ Luego de configurar el Workspace, se puede proceder a crear un nuevo **Applicati
 - Finalmente, se da click a _Finish_.
 
 #### 3. Añadiendo sources
+<p align="center">
+  <img src="graphic_rsrc/vitis_add_source.gif">
+</p>
+
+Para añadir código el que se ejecutará en el PS, se debe, desde el **Explorer**:
+- Hacer click derecho la carpeta `src`, encontrada en el el sistema inferido desde el wrapper, en este caso `eucDis_32_int_system > eucDis_32_int/`, y seleccionar **Import Sources**.
+- Desde el menú desplegado, seleccionar la carpeta [/soc/vitis/](/soc/vitis) y hacer click en _Open_.
+- Luego elegir el código a importar
+| **Versión** | **Código a importar** |
+|-------------|------------------------------|
+| _int_ |  `main_int.c` |
+| _float_ | `main_float.c` |
+
+- Hacer click en _Finish_.
+
+#### 4. Añadiendo biblioteca: math
+<p align="center">
+  <img src="graphic_rsrc/vitis_library.gif">
+</p>
+
+Dado que el compilador de Vitis, no incluye por defecto ninguna biblioteca al momento de compilar, es necesario indicarle que añada la biblioteca: math. Para ello:
+
+- Haciendo click derecho sobre `eucDis_32_int_system > eucDis_32_int/` y seleccionando **Properties**.
+- Desde el menú desplegado seleccionar, al lado izquierdo, **C/C++ Build** y luego **Settings**
+- Dentro de las opciones que aparecieron, bajo **ARM v7 gcc linker**, se encuentra **Libraries**, haciendo click sobre la opción se desplegara un recuadro
+- En la esquina superior derecha del recuadro, en el ícono de una "hoja con un signo más", se desplegará un recuadro, ingresar el valor: `m` y aceptar.
+
+#### 5. Compilando el proyecto
+<p align="center">
+  <img src="graphic_rsrc/vitis_build.gif">
+</p>
+
+Para compilar el proyecto, basta con hacer click derecho sobre `eucDis_32_int_system > eucDis_32_int/` y seleccionar **Build Project**. En primer lugar se hará la compilación de las bibliotecas (libraries) incluidas y luego de el archivo main.
+
+
+#### 6. Carga de Bitstream y ejecutando en el SoC
+<p align="center">
+  <img src="graphic_rsrc/vitis_bitstream.gif">
+</p>
+
+Con el proyecto compilado, se puede comenzar el proceso de carga en el SoC. En primer lugar, se programa la tarjeta, cargando el bitstream, para ello:
+- Click sobre el menú que dice **Xilinx**, seleccionando **Program Device**
+- En el menú desplegado, se deja todo por defecto y se da click a **Program**(La tarjeta de desarrollo debe estar previamente conectada). Luego de completar una barra de carga, el bitstream estará cargado.
+
+Ahora se puede proseguir a ejecutar el código del módulo PS, para ello:
+- Haciendo click derecho sobre `eucDis_32_int_system > eucDis_32_int/` y seleccionando **Run as** - **Launch Hardware**, se ejecutará el código en el módulo PS.
+
+**Nota:** Como se ve en la animación, durante el proceso de ejecución puede salir un error que dice `Error while launching program: Memory read error at 0xE001034. AP transaction timeout`. Reintentar el proceso de ejecución en general lo soluciona. El error puede a algún módulo inicialmente apagado o en reset, por lo que reiniciar el proceso de ejecución puede solucionarlo. [Foro Xilinx](https://support.xilinx.com/s/question/0D52E00006hpXaNSAU/memory-write-error-at-0x100000-apb-ap-transaction-error-dap-status-f0000021-zyboz710?language=en_US)
+
+#### 7. Verificación funcionamiento
+
+Para dar inicio y observar los resultados de los _trials_, se puede utilizar el script incluido en la sección [/soc/utils](/soc/utils): `host_cmd.py` (En el readme de la sección se puede encontrar instrucciones de su utilización).
+
+Para comprobar el funcionamiento, desde una terminal puede usar el siguiente comando:
+```
+python3 host_cmd.py -port <port> -N 10
+```
+Reemplazando `<port>` por el correspondiente, donde se encuentra conectada la `Zybo`. El argumento `-N 10` indica que se realizaran 10 trials.
+
+<p align="center">
+  <img src="graphic_rsrc/vitis_verification_script.png">
+</p>
+
+Como se puede ver, para cada trial se verifica que la diferencia entre el valor calculado y el valor esperado, sea menor que la tolerancia, definida en el código como `1`, si se cumple se le asigna `PASS` al trial. Al finalizar se reporta el error acumulado, el error promedio, su desviación estándar, así como también el error máximo y mínimo. 
