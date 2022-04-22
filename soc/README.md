@@ -18,6 +18,13 @@ En la siguiente sección se explicará el _workflow_ asociado al trabajo con sis
         5. [Exportar a Vivado](#5-exportar-a-vivado)
     - [Vivado: Creación de Proyecto usando el módulo exportado](#vivado-creación-de-proyecto-usando-el-módulo-exportado)
         1. [Creación del proyecto](#1-creación-del-proyecto)
+        2. [Diseño por Block Diagram](#2-diseño-por-block-diagram)
+        3. [Añadiendo repositorio](#3-añadiendo-repositorio)
+        4. [Añadiendo módulos](#4-añadiendo-módulos)
+        5. [Activando Interrupciones y validando diseño](#activando-interrupciones-y-validando-diseño)
+            - [Opcional: Sólo para módulo flotante](#opcional-sólo-para-módulo-flotante)
+        6. [Generando Wrapper y Bitstream](#6-generando-wrapper-y-bitstream)
+        7. [Exportando Hardware](#7-exportando-hardware)
 
 
 ## Requisitos
@@ -325,4 +332,36 @@ El bloque implementado para la distancia, tiene la capacidad de enviar una seña
 
 **Nota:** Los errores mostrados deben ser ignorados, dado que no provienen del diseño. [Foro de Xilinx: 2017.2 - [PSU-1] critical warning with basic Zynq design on DDR interface](https://support.xilinx.com/s/question/0D52E00006hpeOrSAI/20172-psu1-critical-warning-with-basic-zynq-design-on-ddr-interface?language=en_US)
 
+##### Opcional: Sólo para módulo _flotante_
+
+<p align="center">
+  <img src="graphic_rsrc/clock_conf.png">
+</p>
+
+Dentro del mismo menú de configuraciones para el PS, para el caso del módulo que trabaja con flotantes, es necesario ajustar el reloj que controla la FPGA
+
+- En el menú lateral **Page Navigator**, seleccionar la opción **Clock Configuration**.
+- En el menú **PL Fabric Clocks**, en `FCLK_CLK0`, en el campo _Requested Frequency, ingresar 74.
+
 #### 6. Generando Wrapper y Bitstream
+<p align="center">
+  <img src="graphic_rsrc/vivado_wrapper.gif">
+</p>
+
+Antes de sintetizar, es necesario que a partir del diagrama de bloques implementado, se genere el equivalente en código Verilog, para ello:
+
+- Desde **Design Sources**, hacer click derecho sobre el diagrama y seleccionar la opción **Create HDL Wrapper**, luego de este proceso en la sources, aparecerá un módulo top que contiene el diseño generado.
+- Luego de esto, se puede hacer click en **Generate Bitstream** para inicar el proceso completo
+
+#### 7. Exportando Hardware
+
+<p align="center">
+  <img src="graphic_rsrc/vivado_export_h.gif">
+</p>
+
+Luego de que se haya completado el proceso de generación de Bitstream, se puede exportar el hardware que se ha generado, para que sea usado como base en la siguiente etapa (Vitis). Para exportar el hardware:
+
+- Desde **File**, escoger **Export** y luego **Export Hardware**.
+- Se desplegará un menú, haciendo click en _Next_, se debe seleccionar la opción que dice **Include Bitstream** y luego nuevamente _Next_.
+- Se dará la opción de modificar el nombre y ubicación del archivo `.XSA` de salida, se recomienda dejarlo por defecto.
+- Haciendo click en _Next_ y luego en _Finish_ se dará paso a la generación del archivo `.XSA`.
