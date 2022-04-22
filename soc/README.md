@@ -422,6 +422,7 @@ Para añadir código el que se ejecutará en el PS, se debe, desde el **Explorer
 - Hacer click derecho la carpeta `src`, encontrada en el el sistema inferido desde el wrapper, en este caso `eucDis_32_int_system > eucDis_32_int/`, y seleccionar **Import Sources**.
 - Desde el menú desplegado, seleccionar la carpeta [/soc/vitis/](/soc/vitis) y hacer click en _Open_.
 - Luego elegir el código a importar
+
 | **Versión** | **Código a importar** |
 |-------------|------------------------------|
 | _int_ |  `main_int.c` |
