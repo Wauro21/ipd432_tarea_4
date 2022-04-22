@@ -26,7 +26,13 @@ En la siguiente sección se explicará el _workflow_ asociado al trabajo con sis
         6. [Generando Wrapper y Bitstream](#6-generando-wrapper-y-bitstream)
         7. [Exportando Hardware](#7-exportando-hardware)
     - [Vitis: Programación en Processing System](#vitis-programación-en-processing-system)
-
+        1. [Configuración de Workspace](#1-configuración-de-workspace)
+        2. [Creación de Proyecto Aplicación](#2-creación-de-proyecto-aplicación)
+        3. [Añadiendo sources](#3-añadiendo-sources)
+        4. [Añadiendo biblioteca: math](#4-añadiendo-biblioteca-math)
+        5. [Compilando el proyecto](#5-compilando-el-proyecto)
+        6. [Carga de Bitstream y ejecutando el SoC](#6-carga-de-bitstream-y-ejecutando-en-el-soc)
+        7. [Verificación funcionamiento](#7-verificación-funcionamiento)
 
 ## Requisitos
   El hardware utilizado para el presente tutorial corresponde a una tarjeta de desarrollo: **Zybo/Zynq -7000**, con un chip: **xc7z010clg400-1**.
@@ -376,7 +382,7 @@ Luego de que se haya completado el proceso de generación de Bitstream, se puede
 
 Al abrir Vitis, se solicitará un directorio para utilizar como **Workspace**, se recomienda utilizar el directorio [/soc/vitis/](/soc/vitis)
 
-#### 2. Creación de Proyecto/Aplicación
+#### 2. Creación de Proyecto Aplicación
 <p align="center">
   <img src="graphic_rsrc/vitis_new.gif">
 </p>
@@ -462,4 +468,6 @@ Reemplazando `<port>` por el correspondiente, donde se encuentra conectada la `Z
   <img src="graphic_rsrc/vitis_verification_script.png">
 </p>
 
-Como se puede ver, para cada trial se verifica que la diferencia entre el valor calculado y el valor esperado, sea menor que la tolerancia, definida en el código como `1`, si se cumple se le asigna `PASS` al trial. Al finalizar se reporta el error acumulado, el error promedio, su desviación estándar, así como también el error máximo y mínimo. 
+Como se puede ver, para cada trial se verifica que la diferencia entre el valor calculado y el valor esperado, sea menor que la tolerancia, definida en el código como `1`, si se cumple se le asigna `PASS` al trial. Al finalizar se reporta el error acumulado, el error promedio, su desviación estándar, así como también el error máximo y mínimo.
+
+## Proceso de medición latencia: PS y PL
