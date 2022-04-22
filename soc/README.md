@@ -11,7 +11,7 @@ En la siguiente sección se explicará el _workflow_ asociado al trabajo con sis
             - [Generación proyecto](#generación-proyecto)
             - [Añadiendo sources](#añadiendo-sources)
             - [Añadiendo testbench](#añadiendo-testbench)
-            - [Configuración de la solución y selección de hardware target](#configuración-de-la-solución-y-selección-de-hardware target)
+            - [Configuración de la solución y selección de hardware target](#configuración-de-la-solución-y-selección-de-hardware-target)
 
 ## Requisitos
   El hardware utilizado para el presente tutorial corresponde a una tarjeta de desarrollo: **Zybo/Zynq -7000**, con un chip: **xc7z010clg400-1**.
