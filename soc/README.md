@@ -14,6 +14,8 @@ En la siguiente sección se explicará el _workflow_ asociado al trabajo con sis
             - [Configuración de la solución y selección de hardware target](#configuración-de-la-solución-y-selección-de-hardware-target)
         2. [Simulación del código de alto nivel](#2-simulación-del-código-de-alto-nivel)
         3. [Síntesis](#3-síntesis)
+        4. [Co-Simulación](#4-co-simulación)
+        5. [Exportar a Vivado](#5-exportar-a-vivado)
 
 ## Requisitos
   El hardware utilizado para el presente tutorial corresponde a una tarjeta de desarrollo: **Zybo/Zynq -7000**, con un chip: **xc7z010clg400-1**.
