@@ -25,7 +25,7 @@
 
 // #define DEBUG_VECTORS
 
-static u32 out_pin;
+static u32 out_pin, hw_pin;
 XGpioPs gpio;
 XEucdis32_float eucdis_ip;
 XScuGic intc;
@@ -86,7 +86,8 @@ int main(void) {
   XGpioPs_Config *config_ptr;
 
   config_ptr = XGpioPs_LookupConfig(GPIO_DEVICE_ID);
-	out_pin = 0;
+	out_pin = 13;
+  hw_pin = 10;
 
   status = XGpioPs_CfgInitialize(&gpio, config_ptr, config_ptr->BaseAddr);
 	if (status != XST_SUCCESS) {
@@ -97,6 +98,9 @@ int main(void) {
   XGpioPs_SetDirectionPin(&gpio, out_pin, 1);
 	XGpioPs_SetOutputEnablePin(&gpio, out_pin, 1);
 	XGpioPs_WritePin(&gpio, out_pin, 0x0);
+  XGpioPs_SetDirectionPin(&gpio, hw_pin, 1);
+	XGpioPs_SetOutputEnablePin(&gpio, hw_pin, 1);
+	XGpioPs_WritePin(&gpio, hw_pin, 0x0);
 
   status = XEucdis32_float_Initialize(&eucdis_ip, XHLS_DEVICE_ID);
   if (status != XST_SUCCESS) {
@@ -123,7 +127,7 @@ int main(void) {
       double sum = 0;
       float result_sw;
       GenVectors(A_data, B_data);
-      
+
       // PS processing
       XGpioPs_WritePin(&gpio, out_pin, 0x1);
       for (int i = 0; i < VECTOR_SIZE; i++) {
@@ -137,13 +141,13 @@ int main(void) {
       for (int i = 0; i < 10000; i++);
 
       // PL processing
-      XGpioPs_WritePin(&gpio, out_pin, 0x1);
+      XGpioPs_WritePin(&gpio, hw_pin, 0x1);
       ip_status = 0x01;
       TxVectors(&eucdis_ip, A_data, B_data);
 
       XEucdis32_float_Start(&eucdis_ip);
       while (ip_status);
-      XGpioPs_WritePin(&gpio, out_pin, 0x0);
+      XGpioPs_WritePin(&gpio, hw_pin, 0x0);
       printf("%f\n", rx_data[0]);
 
       // Delay
