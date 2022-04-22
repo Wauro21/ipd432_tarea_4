@@ -12,6 +12,8 @@ En la siguiente sección se explicará el _workflow_ asociado al trabajo con sis
             - [Añadiendo sources](#añadiendo-sources)
             - [Añadiendo testbench](#añadiendo-testbench)
             - [Configuración de la solución y selección de hardware target](#configuración-de-la-solución-y-selección-de-hardware-target)
+        2. [Simulación del código de alto nivel](#2-simulación-del-código-de-alto-nivel)
+        3. [Síntesis](#3-síntesis)
 
 ## Requisitos
   El hardware utilizado para el presente tutorial corresponde a una tarjeta de desarrollo: **Zybo/Zynq -7000**, con un chip: **xc7z010clg400-1**.
@@ -92,3 +94,113 @@ En esta sección se puede dar un nombre a la solución a implementar y se puede 
 
 
 Finalmente, en la sección de _Part Selection_, se selecciona el hardware target, en ambos casos, se utiliza la placa de desarrollo **Zybo/Zynq -7000**, con un chip: **xc7z010clg400-1**. Finalmente se le da click a _Finish_ y se habrá configurado el proyecto de manera exitosa.
+
+### 2. Simulación del código de alto nivel
+<p align="center">
+  <img src="graphic_rsrc/sim_visualization.gif">
+</p>
+
+Dentro de las herramientas ofrecidas por Vitis HLS, se encuentra la capacidad de comprobar el funcionamiento del código de alto nivel mediante una simulación. Esto se refiere a utilizar el testbench (_testbench.cpp_), para comprobar que el resultado del código sea el deseado.
+
+<p align="center">
+  <img src="graphic_rsrc/flow_navigator.png">
+</p>
+
+Desde el panel de _Flow Navigator_, se puede escoger la opción _Run C Simulation_, esto generará la compilación y resultado del testbench que se incluyo en la estapa previa (_testbench.cpp_). Luego de esto, comenzara a compilarse y correr el código lo que se podrá observar mediante la actividad mostrada por la consola de Vitis HLS. Cuando se termine de correr el testbench, se desplegará un archivo con extensión _.log_ que contendrá los resultados de la prueba al código de alto nivel. Para el testbench provisto para la versión de números enteros se esperan los siguientes resultados:
+
+```
+INFO: [SIM 2] *************** CSIM start ***************
+INFO: [SIM 4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../testbench.cpp in debug mode
+   Compiling ../../../../eucDis32_int.cpp in debug mode
+   Generating csim.exe
+Running C++ Simulation!
+27120
+-----------------------------------
+Valor esperado: 27120
+Valor calculado: 27120
+Diferencia directa: 0
+Diferencia relativa: 0
+-----------------------------------
+PASSED!
+-----------------------------------
+INFO: [SIM 1] CSim done with 0 errors.
+INFO: [SIM 3] *************** CSIM finish ***************
+```
+Para el caso del _testbench_ para el módulo que trabaja con números flotantes, se espera un resultado análogo.
+
+**Nota #1**: Si bien el resultado del testbench se muestra tanto en la consola como en el archivo _.log_ desplegado, siempre es mejor observar los resultados de la consola, dado que se ha encontrado ocasiones que luego de correr varias veces el _testbench_, el archivo log desplegado a veces no es actualizado, dando por resultado situaciones de falsos _Passed/Failed_.
+
+**Nota #2**: Vitis HLS tiene la habilidad de desplegar ventanas emergentes con error asociado a los testbench, en el caso de que el código contenga un _print_ con las palabras: "Error" o "Failed". Esto es bastante útil dado que es bastante claro cuando el comportamiento del código no es el esperado, sin la necesidad de trabajar con excepciones o alguna otra forma de aviso mediante código.
+
+#### 3. Síntesis
+<p align="center">
+  <img src="graphic_rsrc/sintesis.gif">
+</p>
+
+En esta etapa Vitis HLS, a partir del código de alto nivel, genera la implementación a partir del comportamiento asociado a la funcionalidad del código.
+
+<p align="center">
+  <img src="graphic_rsrc/flow_navigator.png">
+</p>
+
+Para iniciar el proceso, desde el menú _Flow Navigator_, se escoge la opción _Run C Synthesis_.
+
+<p align="center">
+  <img src="graphic_rsrc/synth_opts.png">
+</p>
+
+Se desplegará un menú de opciones en el cual se puede confirmar parámetros del reloj asociado a la implementación y el hardware target. Estos corresponden a los escogidos anteriormente. Se procede a confirmar seleccionando _OK_, de esta forma iniciando el proceso de síntesis.
+
+<p align="center">
+  <img src="graphic_rsrc/synth_result.png">
+</p>
+
+Luego de completarse la síntesis, se desplegará un reporte con los resultados, principalmente de _timming_ y uso de recursos estimados, en la imagen se muestran los resultados obtenidos para la versión del módulo que trabaja con enteros. Los resultados para el módulo con números float y un análisis de ambos resultados se encuentran en la sección de resultados.
+
+#### 4. Co-Simulación
+
+_Vitis HLS_ permite realizar la Co-Simulación entre el bloque descrito en un lenguaje de alto nivel y el inferido de este. Para ello se utiliza el _testbench_ implementado para verificar el funcionamiento del código de alto nivel.
+
+<p align="center">
+  <img src="graphic_rsrc/flow_navigator.png">
+</p>
+
+Para utilizarlo, desde el menú _Flow Navigator_, se hace click en _Run Cosimulation_.
+
+<p align="center">
+  <img src="graphic_rsrc/co_sim_menu.png">
+</p>
+
+Esto desplegará el menú de configuraciones para la cosimulación, se dejan todos los parámetros por defecto y se da click a _OK_, dando inicio al proceso.
+
+**Nota:** El proceso de cosimulación puede ser bastante largo e intensivo en recursos del computador.
+
+<p align="center">
+  <img src="graphic_rsrc/co_sim_result.png">
+</p>
+
+Luego de finalizarse el proceso, se desplegará un reporte, que en el campo _Status_ informará si el módulo inferido pasó o no (Pass/Failed) el _testbench_. Además se entregará información del _timming_ para la simulación.
+
+
+#### 5. Exportar a Vivado
+
+<p align="center">
+  <img src="graphic_rsrc/export.gif">
+</p>
+
+En esta etapa, se puede exportar el módulo sintetizado desde Vitis HLS hacia Vivado para que sea utilizado como un módulo IP.
+
+<p align="center">
+  <img src="graphic_rsrc/flow_navigator.png">
+</p>
+
+Desde el menú _Flow Navigator_, se escoge la opción _Export RTL_.
+
+<p align="center">
+  <img src="graphic_rsrc/export_menu.png">
+</p>
+
+Se desplegará un sub-menú, en el cual se podrá escoger el directorio de salida (_Output Location_). Dentro del repositorio ya se incluye en la carpeta [vivado/ip_exported](/soc/vivado/ip_exported) el resultado de la exportación del módulo, tanto para números enteros como flotantes, desde Vitis HLS. Como resultado del proceso, se debe obtener un archivo _.zip_ que contiene el módulo. Antes de que este pueda ser usado en Vivado, se debe descomprimir, en el caso del _zip_ provisto dentro de _exported_ip_, se puede descomprimir dentro de esta carpeta.
+
+**Nota:** Se debe indicar la versión para el módulo dado que sino se encontrará un error al momento de realizar la exportación. Se puede poner un valor por defecto, en este caso se utiliza : 1.0.0
