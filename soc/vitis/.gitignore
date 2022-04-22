@@ -1,9 +1,5 @@
 # Everything except main file
 *
-!main.c
+!main_int.c
 !main_float.c
-!super_host_cmd.py
 !.gitignore
-
-#while debuggin
-!eucdis_32_float/src/main_float.c
