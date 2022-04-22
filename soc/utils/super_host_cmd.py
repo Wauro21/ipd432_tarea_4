@@ -11,7 +11,7 @@ direct_errors = []
 
 dsc= "Script to initiate the trial operations in the SoC"
 ap = argparse.ArgumentParser(description=dsc)
-ap.add_argument('-N', nargs=1, required=True, type=int)
+ap.add_argument('-N' , help = "Number of trials", nargs=1, required=True, type=int)
 ap.add_argument('-port', nargs=1, required=True)
 ap.add_argument('-seed', nargs='?', const=1, type=int, default=random.randint(0, 65535))
 opt = ap.parse_args()
