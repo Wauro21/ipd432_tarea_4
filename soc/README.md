@@ -25,6 +25,7 @@ En la siguiente sección se explicará el _workflow_ asociado al trabajo con sis
             - [Opcional: Sólo para módulo flotante](#opcional-sólo-para-módulo-flotante)
         6. [Generando Wrapper y Bitstream](#6-generando-wrapper-y-bitstream)
         7. [Exportando Hardware](#7-exportando-hardware)
+    - [Vitis: Programación en Processing System](#vitis-programación-en-processing-system)
 
 
 ## Requisitos
@@ -365,3 +366,36 @@ Luego de que se haya completado el proceso de generación de Bitstream, se puede
 - Se desplegará un menú, haciendo click en _Next_, se debe seleccionar la opción que dice **Include Bitstream** y luego nuevamente _Next_.
 - Se dará la opción de modificar el nombre y ubicación del archivo `.XSA` de salida, se recomienda dejarlo por defecto.
 - Haciendo click en _Next_ y luego en _Finish_ se dará paso a la generación del archivo `.XSA`.
+
+### Vitis: Programación en Processing System
+
+#### 1. Configuración de Workspace
+<p align="center">
+  <img src="graphic_rsrc/vitis_workspace.png">
+</p>
+
+Al abrir Vitis, se solicitará un directorio para utilizar como **Workspace**, se recomienda utilizar el directorio [/soc/vitis/](/soc/vitis)
+
+#### 2. Creación de Proyecto/Aplicación
+<p align="center">
+  <img src="graphic_rsrc/vitis_new.gif">
+</p>
+
+Luego de configurar el Workspace, se puede proceder a crear un nuevo **Application Project**:
+
+- Click en **Create Application Project**
+- Desde el menú desplegado, dar click en _Next_
+- Para la plataforma/**Platform**, se debe seleccionar el menú que dice **Create new Platform from Hardware (XSA)**
+    - **XSA File**: En este campo, se le da **Browse**, para seleccioanr el archivo `.XSA` exportado desde Vivado, por defecto este se alamcena en la misma carpeta que el proyecto de Vivado. Se selecciona el archivo, el nombre de la plataforma se mantiene por defecto y se da click a _Next_.
+- En el menú de **Application Project Details**, se le da nombre al proyecto, se utiliza según el módulo a implementar:
+
+| **Versión** | **Application Project Name** |
+|-------------|------------------------------|
+| _int_ |  `eucDis_32_int` |
+| _float_ | `eucDis32_float` |
+
+- Se le da click a _Next_ y nuevamente a _Next_
+- Para la selección de **Templates**, se escoge **Empty Application(C)**.
+- Finalmente, se da click a _Finish_.
+
+#### 3. Añadiendo sources
