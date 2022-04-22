@@ -278,3 +278,51 @@ Se añade un diseño por bloques, para ello desde el menú **IP INTEGRATOR**, se
 Luego de esto, se desplegará una ventana dónde se podran añadir los módulos para el diseño.
 
 #### 3. Añadiendo repositorio
+
+<p align="center">
+  <img src="graphic_rsrc/vivado_add_repo.gif">
+</p>
+
+Se debe añadir el módulo exportado desde _Vitis HLS_ a los repositorios de IP de Vivado, para que este pueda ser añadido al proyecto.
+- Para ello es necesario desde el menú **Flow Navigator**, seleecionar **IP Catalog**.
+- Esto desplegará una ventana con los repositorios estándar de Vivado, haciendo click derecho se puede seleccionar la opción **Add Repository**, lo que permitirá seleccionar una carpeta dónde se encuentren los módulos a añadir. En este caso, se trabajar considerando los módulos incluidos junto al repositorio (en caso de querer trabajar con los obtenidos desde Vitis HLS, debe indicar su ubicación en este paso). **Para trabajar con los módulos incluidos junto con el repositorio debe haber descomprimido los archivos `.zip` incluidos en su respectiva carpeta.**
+- Añadir la carpeta según el módulo que se quiera añadir:
+
+| **Versión** | **Repositorio a añadir** |
+|-------------|------------------|
+| _int_ | /soc/vivado/ip_exported/eucDis_32_int/ |
+| _float_ | /soc/vivado/ip_exported/eucDis_32_float/|
+
+- Luego de esto, aparecera una sección denominada **User Repository**, desplegando ésta, se puede confirmar que el módulo se encuentra correctamente añadido.
+
+
+#### 4. Añadiendo módulos
+<p align="center">
+  <img src="graphic_rsrc/vivado_adding_modules.gif">
+</p>
+
+- Desde **Design Sources**, se puede abrir el diagrama
+- Desde el menú superior, escoger el ícono con signo más, **Add IP**, a partir de esto se debe añadir los siguientes IPs:
+    - `ZYNQ7 Processing System`: Que corresponde al procesador ARM a implementar.
+    - `eucDis32_int`: Corresponde al módulo de distancia Euclidiana que se usará, en el caso del flotante debe usarse `eucDis32_float`
+- Dos opciones deben haber aparecido en la parte superior **Run Block Automation** y **Run Connection Automation**.
+    - Hacer click sobre  **Run Block Automation** y en el menú desplegado, confirmar.
+    - Posterior a esto, hacer click sobre **Run Connection Automation** y confirmar
+
+#### 5. Activando Interrupciones y validando diseño
+
+<p align="center">
+  <img src="graphic_rsrc/vivado_interrupt.gif">
+</p>
+
+El bloque implementado para la distancia, tiene la capacidad de enviar una señal de interrupción al _PS_ para indicar el término de un cálculo, por lo que es necesario activar un puerto de interrupciones en el procesador ARM. Para ello:
+- Haciendo doble click sobre el bloque `ZYNQ Processin System`, se desplegará un menú de configuraciones.
+- En el menú lateral, **Page Navigator**, seleccionar la opción **Interrupts**.
+- Activar **Fabric Interrupts**:
+    - Desplegar las opciones y activar **PL-PS Interrup Ports**, expandiendo esta opción, también chequear **IRQ_F2P[15:0]**.
+- Un puerto debe haber aparecido en el bloque _PS_. Acercando el mouse, se puede hacer click y arrastar para generar un "cable", el cual se puede conectar al puerto de interrupción del módulo de distancia Euclidiana. Un cable naranjo debe haber aparecido indicando la conexión entre ambos.
+- Luego de haber realizado estos pasos, se puede **Validar el diseño**, haciendo click en el icono de "ticket" en el menú superior.
+
+**Nota:** Los errores mostrados deben ser ignorados, dado que no provienen del diseño. [Foro de Xilinx: 2017.2 - [PSU-1] critical warning with basic Zynq design on DDR interface](https://support.xilinx.com/s/question/0D52E00006hpeOrSAI/20172-psu1-critical-warning-with-basic-zynq-design-on-ddr-interface?language=en_US)
+
+#### 6. Generando Wrapper y Bitstream
