@@ -16,6 +16,9 @@ En la siguiente sección se explicará el _workflow_ asociado al trabajo con sis
         3. [Síntesis](#3-síntesis)
         4. [Co-Simulación](#4-co-simulación)
         5. [Exportar a Vivado](#5-exportar-a-vivado)
+    - [Vivado: Creación de Proyecto usando el módulo exportado](#vivado-creación-de-proyecto-usando-el-módulo-exportado)
+        1. [Creación del proyecto](#creación-del-proyecto)
+
 
 ## Requisitos
   El hardware utilizado para el presente tutorial corresponde a una tarjeta de desarrollo: **Zybo/Zynq -7000**, con un chip: **xc7z010clg400-1**.
@@ -206,3 +209,55 @@ Desde el menú _Flow Navigator_, se escoge la opción _Export RTL_.
 Se desplegará un sub-menú, en el cual se podrá escoger el directorio de salida (_Output Location_). Dentro del repositorio ya se incluye en la carpeta [vivado/ip_exported](/soc/vivado/ip_exported) el resultado de la exportación del módulo, tanto para números enteros como flotantes, desde Vitis HLS. Como resultado del proceso, se debe obtener un archivo _.zip_ que contiene el módulo. Antes de que este pueda ser usado en Vivado, se debe descomprimir, en el caso del _zip_ provisto dentro de _exported_ip_, se puede descomprimir dentro de esta carpeta.
 
 **Nota:** Se debe indicar la versión para el módulo dado que sino se encontrará un error al momento de realizar la exportación. Se puede poner un valor por defecto, en este caso se utiliza : 1.0.0
+
+### Vivado: Creación de Proyecto usando el módulo exportado
+<p align="center">
+  <img src="graphic_rsrc/vivado.gif">
+</p>
+
+#### 1. Creación del proyecto
+
+<p align="center">
+  <img src="graphic_rsrc/vivado_new_project.png">
+</p>
+
+Se debe generar un nuevo proyecto en Vivado, dada la versión del módulo con la que se esté trabajando el proyecto se debe denominar:
+
+| **Versión** | **Project Name** |
+|-------------|------------------|
+| _int_ | eucDis_32_int |
+| _float_ | eucDis_32_float|
+
+La ubicación recomendada, es en la carpeta del repositorio [/soc/vivado](/soc/vivado). Se debe mantener chequeada la opción _Create Project Subdirectory_.
+
+<p align="center">
+  <img src="graphic_rsrc/vivado_projec_type.png">
+</p>
+
+Se debe escoger _RTL Project_.
+
+<p align="center">
+  <img src="graphic_rsrc/vivado_sources.png">
+</p>
+
+Se debe dejar sin sources.
+
+<p align="center">
+  <img src="graphic_rsrc/vivado_const.png">
+</p>
+
+Se debe dejar sin constraints.
+
+<p align="center">
+  <img src="graphic_rsrc/vivado_board.png">
+</p>
+
+Para la selección de plataforma, se debe ir a la pestaña _Boards_ y en el buscador escribir `zybo`, donde debería aparecer la plataforma que se busca, con campo `part` igual xc7z010clg400-1.
+
+**Nota:** Verificar que en el campo _Status_ la plataforma aparece listada como `Installed`.
+
+<p align="center">
+  <img src="graphic_rsrc/vivado_summary.png">
+</p>
+
+El proyecto debe haber quedado configurado de la siguiente manera (variando únicamente el nombre en el caso del módulo flotante), luego de verificar se le da click a _Finish_.
