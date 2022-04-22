@@ -38,6 +38,8 @@ En la siguiente sección se explicará el _workflow_ asociado al trabajo con sis
     - [Captura de datos con analizador lógico](#captura-de-datos-con-analizador-lógico)
     - [Procesado mediante script](#procesado-mediante-script)
 - [Resultados](#resultados)
+    - [Módulo int](#módulo-int)
+    - [Módulo _float_](#módulo-float)
 
 ## Requisitos
   El hardware utilizado para el presente tutorial corresponde a una tarjeta de desarrollo: **Zybo/Zynq -7000**, con un chip: **xc7z010clg400-1**.
@@ -608,3 +610,102 @@ PL: AVG Latency 468.95090899999764 us | ST.D Latency 0.3603007170669534 us | Min
 
 ```
 ## Resultados
+
+A continuación se reportan los resultados obtenidos para los diversos procesos
+
+### Módulo _int_
+
+#### Resultados Vitis HLS
+
+Reporte obtenido durante la etapa de diseño de _High Level Synthesis_.
+
+| **Latencia _ciclos_** | **BRAM _%_** | **DSP _%_** | **FF _%_** | **LUT _%_** | **URAM _%_**|
+|-|-|-|-|-|-|
+| 81 | 53 |  120 | 32 | 49 | 0 |
+
+**Note que si bien el porcentaje de DSP utilizadas es superior al máximo, estas se convertiran en LUTs en la posterior implementación en Vivado.**
+
+
+#### Resultados Vivado
+
+La implementación final, se realizó con un **reloj principal de 100 MHz** para la lógica PL. Se obtuvieron los siguientes resultados de timming:
+
+##### Timming
+
+|| **Worst Negative Slack** _ns_ | **Total Negative Slack** _ns_ | **Number of failing Endpoints** | **Total Number of Endpoints** |
+|------|--------------------|--------------------|--------------------|--------------------|
+| **Setup** | 0.12 | 0 | 0 | 13578 |
+| **Hold** | 0.026 | 0 | 0 | 13578 |
+
+
+##### Uso de recursos
+
+| **Recurso** | **Utilización** | **Disponible** | **_%_ Utilización**|
+|-------------|-----------------|----------------|--------------------|
+| LUT | 7023 | 17600 | 39.90 |
+| LUTRAM | 92 | 6000 | 1.53 |
+| FF | 4404 | 35200 | 12.51 |
+| BRAM | 32 | 60 | 53.33 |
+| DSP | 72 | 80 | 90.00|
+| BUFG | 1 | 32 | 3.13 |
+
+**Note que en general la utilización de recursos es similar a lo esperado en Vitis HLS, sin embargo, el valor de DSP y LUTs varía, lo que puede ser explicado dado el sobre uso de DSP en el diseño original.**
+
+#### Resultados Vitis: Latencia PS y PL
+
+A partir de la medición de latencia mediante el proceso descrito anteriormente, realizando **1000 trials**, se llega a los siguientes resultados para la latencia del módulo:
+
+| **Procesada**| **Latencia Promedio medida _us_** | **Desviación Estándar medida _us_** | **Latencia mínima observada _us_** | **Latencia máxima observada _us_**|
+|-|-|-|-|-|
+| PS | 63.23928899999865 | 0.025973206945959657 | 63.165999999892364 | 63.41700000001005 |
+| PL | 468.95090899999764 | 0.3603007170669534 | 468.08299999989697 | 477.33399999994043 |
+
+
+
+
+
+### Módulo _float_
+
+#### Resultados Vitis HLS
+
+Reporte obtenido durante la etapa de diseño de _High Level Synthesis_.
+
+| **Latencia _ciclos_** | **BRAM _%_** | **DSP _%_** | **FF _%_** | **LUT _%_** | **URAM _%_**|
+|-|-|-|-|-|-|
+| 5308 | 53 |  8 | 13 | 38 | 0 |
+
+
+
+#### Resultados Vivado
+
+La implementación final, se realizó con un **reloj principal de 100 MHz** para la lógica PL. Se obtuvieron los siguientes resultados de timming:
+
+##### Timming
+
+|| **Worst Negative Slack** _ns_ | **Total Negative Slack** _ns_ | **Number of failing Endpoints** | **Total Number of Endpoints** |
+|------|--------------------|--------------------|--------------------|--------------------|
+| **Setup** | 0.42 | 0 | 0 | 5332 |
+| **Hold** | 0.043 | 0 | 0 | 5332 |
+
+
+##### Uso de recursos
+
+| **Recurso** | **Utilización** | **Disponible** | **_%_ Utilización**|
+|-------------|-----------------|----------------|--------------------|
+| LUT | 4502 | 17600 | 39.90 |
+| LUTRAM | 92 | 6000 | 1.53 |
+| FF | 1973 | 35200 | 5.61 |
+| BRAM | 32 | 50 | 53.33 |
+| DSP | 7 | 80 | 8.75|
+| BUFG | 1 | 32 | 3.13 |
+
+**Note que la estimiación de uso de recursos obtenida desde Vitis HLS es prácticamente igual a la obtendida en Vivado.**
+
+#### Resultados Vitis: Latencia PS y PL
+
+A partir de la medición de latencia mediante el proceso descrito anteriormente, realizando **1000 trials**, se llega a los siguientes resultados para la latencia del módulo:
+
+| **Procesada**| **Latencia Promedio medida _us_** | **Desviación Estándar medida _us_** | **Latencia mínima observada _us_** | **Latencia máxima observada _us_**|
+|-|-|-|-|-|
+| PS | 74.21991200000068 | 0.018951260002745628 | 74.20799999957595 | 74.2919999998648 |
+| PL | 640.9916830000013 | 0.1520702617602207 | 640.5830000000278 | 641.4999999999616 |
