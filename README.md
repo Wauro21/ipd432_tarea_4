@@ -1,8 +1,12 @@
-# [IPD432] Tarea #4
+# Guías de High-Level-Synthesis y SoC
 
-## Integrantes
-- Mauricio Aravena Cifuentes
-- Pablo Reyes Robles
+Las siguientes guías buscan ejemplificar el flujo de diseño de **High-Level-Synthesis** y **SoC** en FPGA, utilizando las herramientas de diseño de Vivado, Vitis y Vitis HLS de Xilinx. 
+
+Las guías fueron realizadas en el contexto del curso IPD432 - Diseño Avanzado de Sistemas Digitales. 
+
+## Autores
+- Mauricio Aravena Cifuentes (@Wauro21)
+- Pablo Reyes Robles (@pabloreyesrobles)
 
 ## Estructura del Repositorio
 
